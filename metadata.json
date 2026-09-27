@@ -1,0 +1,10 @@
+{
+  "name": "Remix Papyrus Notes \u0026 Tasks",
+  "description": "A refined notes and tasks manager featuring a wide variety of animated pixel art companions (cats, pets, characters, fantasy), a focus timer, and warm paper-inspired aesthetics.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

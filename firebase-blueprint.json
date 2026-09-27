@@ -1,0 +1,87 @@
+{
+  "entities": {
+    "users": {
+      "path": "users/{userId}",
+      "description": "User account document",
+      "fields": {
+        "uid": { "type": "string", "required": true },
+        "email": { "type": "string", "required": false },
+        "displayName": { "type": "string", "required": false },
+        "photoURL": { "type": "string", "required": false },
+        "createdAt": { "type": "number", "required": true },
+        "updatedAt": { "type": "number", "required": true }
+      },
+      "subcollections": {
+        "notes": {
+          "path": "users/{userId}/notes/{noteId}",
+          "description": "User notes with markdown and pixel themes",
+          "fields": {
+            "id": { "type": "string", "required": true },
+            "title": { "type": "string", "required": true },
+            "content": { "type": "string", "required": false },
+            "category": { "type": "string", "required": true },
+            "tags": { "type": "array", "required": true },
+            "color": { "type": "string", "required": true },
+            "isPinned": { "type": "boolean", "required": true },
+            "checklist": { "type": "array", "required": false },
+            "thumbnailUrl": { "type": "string", "required": false },
+            "thumbnailAspectRatio": { "type": "string", "required": false },
+            "createdAt": { "type": "number", "required": true },
+            "updatedAt": { "type": "number", "required": true }
+          }
+        },
+        "journals": {
+          "path": "users/{userId}/journals/{journalId}",
+          "description": "User daily journal reflections with moods, audio recordings, and photo thumbnails",
+          "fields": {
+            "id": { "type": "string", "required": true },
+            "date": { "type": "string", "required": true },
+            "title": { "type": "string", "required": true },
+            "content": { "type": "string", "required": false },
+            "mood": { "type": "string", "required": true },
+            "tags": { "type": "array", "required": true },
+            "color": { "type": "string", "required": true },
+            "thumbnailUrl": { "type": "string", "required": false },
+            "thumbnailAspectRatio": { "type": "string", "required": false },
+            "audioRecording": { "type": "object", "required": false },
+            "voiceTranscript": { "type": "string", "required": false },
+            "checklist": { "type": "array", "required": false },
+            "createdAt": { "type": "number", "required": true },
+            "updatedAt": { "type": "number", "required": true }
+          }
+        },
+        "tasks": {
+          "path": "users/{userId}/tasks/{taskId}",
+          "description": "User productivity tasks and reminders",
+          "fields": {
+            "id": { "type": "string", "required": true },
+            "title": { "type": "string", "required": true },
+            "description": { "type": "string", "required": false },
+            "completed": { "type": "boolean", "required": true },
+            "completedAt": { "type": "number", "required": false },
+            "priority": { "type": "string", "required": true },
+            "dueDate": { "type": "string", "required": false },
+            "category": { "type": "string", "required": true },
+            "createdAt": { "type": "number", "required": true }
+          }
+        },
+        "profile": {
+          "path": "users/{userId}/profile/{docId}",
+          "description": "User custom pixel avatar and stats",
+          "fields": {
+            "name": { "type": "string", "required": true },
+            "avatarId": { "type": "string", "required": true },
+            "category": { "type": "string", "required": true },
+            "accessory": { "type": "string", "required": true },
+            "frameColor": { "type": "string", "required": true },
+            "title": { "type": "string", "required": true },
+            "totalFocusMinutes": { "type": "number", "required": false },
+            "completedPomodoros": { "type": "number", "required": false },
+            "currentStreak": { "type": "number", "required": false },
+            "updatedAt": { "type": "number", "required": false }
+          }
+        }
+      }
+    }
+  }
+}
