@@ -94,18 +94,6 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
             </span>
           )}
         </button>
-
-        <button
-          onClick={() => onViewChange('character')}
-          className={`flex flex-col items-center justify-center py-1 px-2 rounded-lg text-[11px] transition-colors ${
-            currentView === 'character'
-              ? 'text-[#2C241C] font-bold'
-              : 'text-[#827464] hover:text-[#2C241C]'
-          }`}
-        >
-          <User className="w-4 h-4 mb-0.5" />
-          <span>Avatar</span>
-        </button>
       </div>
     </div>
   );

@@ -5,7 +5,8 @@ import {
   Cloud, 
   ShieldCheck, 
 
-  AlertCircle
+  AlertCircle,
+  TriangleAlert
 } from 'lucide-react';
 import { geometricAsArray } from '../assets/images';
 import { signInWithGoogle } from '../services/firebase';
@@ -78,6 +79,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
           <div className="flex items-center gap-2.5 text-xs text-[#554737]">
             <ShieldCheck className="w-4 h-4 text-[#16A34A] flex-shrink-0" />
             <span>Private & isolated user storage vault</span>
+          </div>
+          <div className="flex items-center gap-2.5 text-xs text-[#554737]">
+            <TriangleAlert className="w-4 h-4 text-[#a31616] flex-shrink-0" />
+            <span>Use a VPN if you are in IRAN</span>
           </div>
         </div>
 

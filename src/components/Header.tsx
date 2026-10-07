@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="sticky top-0 z-30 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#E6DEC9] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-3 sm:gap-4">
-          {/* Brand Logo */}
+          {/* App Logo */}
           <div 
             className="cursor-pointer transition-transform active:scale-95 flex-shrink-0"
             onClick={() => onViewChange('dashboard')}
@@ -76,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
-              <span>Dashboard</span>
+              <span>Home</span>
             </button>
 
             <button
@@ -167,16 +167,6 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Right Action buttons, Quick Capture & Unified Avatar/Account Section */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Cloud Sync Status Indicator */}
-            <div 
-              className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#F0ECE2] border border-[#DDD2BC] text-[11px] font-medium text-[#554737]"
-              title="Data is backed up in real-time to Google Cloud Firestore"
-            >
-              <Cloud className="w-3.5 h-3.5 text-[#0284C7]" />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse" />
-              <span>Synced</span>
-            </div>
-
             {/* Quick capture button */}
             <button
               id="btn-quick-capture-header"
@@ -199,27 +189,11 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   <div className="relative flex items-center">
                     <PixelAvatar character={character} size="xs" animated={true} />
-                    {user.photoURL ? (
-                      <img 
-                        src={user.photoURL} 
-                        alt="" 
-                        className="w-4 h-4 rounded-full border border-white -ml-1.5 object-cover" 
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="w-4 h-4 rounded-full bg-emerald-600 text-[9px] text-white flex items-center justify-center font-bold -ml-1.5 border border-white">
-                        ✓
-                      </div>
-                    )}
                   </div>
                   
                   <div className="hidden sm:block text-left">
                     <div className="text-[11px] font-bold text-[#2A231C] leading-none group-hover:text-[#8C724B] transition-colors truncate max-w-[85px]">
                       {user.displayName?.split(' ')[0] || character.name}
-                    </div>
-                    <div className="text-[9px] text-[#16A34A] font-semibold flex items-center gap-0.5 leading-tight">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      <span>Online</span>
                     </div>
                   </div>
                   <ChevronDown className="w-3 h-3 text-[#7A6D5E] hidden sm:block" />
@@ -255,37 +229,6 @@ export const Header: React.FC<HeaderProps> = ({
                     onClick={() => setShowUserDropdown(false)} 
                   />
                   <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-[#FAF7F0] border-2 border-[#E2D8C3] shadow-xl p-3.5 z-50 animate-fade-in space-y-3">
-                    {/* User Profile Header */}
-                    <div className="flex items-center gap-3 pb-3 border-b border-[#E8DFC8]">
-                      {user.photoURL ? (
-                        <img 
-                          src={user.photoURL} 
-                          alt={user.displayName || 'User'} 
-                          className="w-11 h-11 rounded-2xl object-cover border-2 border-[#8C724B] shadow-2xs"
-                          referrerPolicy="no-referrer"
-                        />
-                      ) : (
-                        <div className="w-11 h-11 rounded-2xl bg-[#2E251C] text-[#FEF08A] font-bold text-base flex items-center justify-center shadow-2xs">
-                          {(user.displayName || user.email || 'U').charAt(0).toUpperCase()}
-                        </div>
-                      )}
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-1.5">
-                          <p className="text-xs font-bold text-[#2A231C] truncate">
-                            {user.displayName || 'Google Traveler'}
-                          </p>
-                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
-                        </div>
-                        <p className="text-[11px] text-[#7A6D5E] truncate">
-                          {user.email}
-                        </p>
-                        <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-semibold mt-0.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                          Signed In & Cloud Synced
-                        </span>
-                      </div>
-                    </div>
-
                     {/* Companion & Avatar Settings link */}
                     <div 
                       onClick={() => {
@@ -302,7 +245,7 @@ export const Header: React.FC<HeaderProps> = ({
                         </div>
                       </div>
                       <span className="text-[10px] font-bold text-[#8C724B] uppercase tracking-wide">
-                        Customize →
+                        Customize
                       </span>
                     </div>
 
