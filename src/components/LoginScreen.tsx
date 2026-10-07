@@ -4,13 +4,10 @@ import { PixelSceneIllustration } from './PixelSceneIllustration';
 import { 
   Cloud, 
   ShieldCheck, 
-  Sparkles, 
-  CheckCircle2, 
-  Flame, 
-  BookOpen, 
-  CheckSquare,
+
   AlertCircle
 } from 'lucide-react';
+import { geometricAsArray } from '../assets/images';
 import { signInWithGoogle } from '../services/firebase';
 
 interface LoginScreenProps {
@@ -39,7 +36,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
       setLoading(false);
     }
   };
-
+  const randomIndex = Math.floor(Math.random() * geometricAsArray.length);
+  const image = geometricAsArray[randomIndex]
   return (
     <div className="min-h-screen bg-[#F8F6F0] flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       {/* Subtle warm background radial grain */}
@@ -56,12 +54,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
 
           {/* Featured Pixel Art Showcase Vignette */}
           <div className="w-full max-w-[280px] h-36 rounded-2xl overflow-hidden border-2 border-[#D4B37D] shadow-md relative group">
-            <PixelSceneIllustration sceneId="cozy-desk-cat" animated={true} />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-center">
-              <span className="text-[11px] font-bold text-[#FEF08A] tracking-wider uppercase flex items-center justify-center gap-1">
-                <Sparkles className="w-3 h-3 text-[#FBBF24]" />
-                Cloud-Synced Focus Workspace
-              </span>
+            <img src={image} alt="" />
+            <div className="absolute inset-x-0 bottom-0  p-2 text-center">
             </div>
           </div>
 
@@ -70,7 +64,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
               Welcome to Papyrus
             </h1>
             <p className="text-xs text-[#7A6D5E] max-w-xs leading-relaxed">
-              Your mindful workspace for notes, pixel companions, and lo-fi focus sessions.
+              Write Notes & Journals; Organize Your Tasks
             </p>
           </div>
         </div>
@@ -84,10 +78,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
           <div className="flex items-center gap-2.5 text-xs text-[#554737]">
             <ShieldCheck className="w-4 h-4 text-[#16A34A] flex-shrink-0" />
             <span>Private & isolated user storage vault</span>
-          </div>
-          <div className="flex items-center gap-2.5 text-xs text-[#554737]">
-            <Flame className="w-4 h-4 text-[#D97706] flex-shrink-0" />
-            <span>Synced Pomodoro stats & custom pixel avatars</span>
           </div>
         </div>
 
@@ -142,12 +132,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
             Sign in with your Google account to access and store your notes, tasks, and avatar securely in the cloud.
           </p>
         </div>
-      </div>
-
-      {/* Footer Info */}
-      <div className="mt-8 text-center text-[11px] text-[#8C7D6D] flex items-center gap-2 relative z-10">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
-        <span>Firebase Cloud Firestore & Authentication Enabled</span>
       </div>
     </div>
   );

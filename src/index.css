@@ -6,6 +6,7 @@
     color: #2D2825;
   }
   
+  
   .font-serif-display {
     font-family: 'Newsreader', Georgia, serif;
   }
@@ -19,6 +20,7 @@
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
+  
 }
 ::-webkit-scrollbar-track {
   background: transparent;

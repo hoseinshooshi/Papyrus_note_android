@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { User } from 'firebase/auth';
 import { Note, Task, ViewMode, CharacterProfile, JournalEntry } from './types';
