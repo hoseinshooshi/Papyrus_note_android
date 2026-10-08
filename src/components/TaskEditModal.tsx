@@ -30,7 +30,7 @@ export const TaskEditModal: React.FC<TaskEditModalProps> = ({
   onSave,
   onDelete,
   categories,
-}) => {
+}) => { 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<TaskPriority>('medium');

@@ -1,4 +1,4 @@
-import { Note, Task, JournalEntry } from '../types';
+import { Note, Task, JournalEntry, Crypto } from '../types';
 
 export const INITIAL_CATEGORIES = [
   'All',
@@ -8,7 +8,32 @@ export const INITIAL_CATEGORIES = [
   'Ideas',
   'Reading',
 ];
-
+export const CRYPTO_ADDRESS: Crypto[] = [
+  {
+    name: "Bitcoin", 
+    textAddress: "bc1qzwwwwmxrwe4rs9he3pxq56wmnv9sevwgetdwkq", 
+    qrCodeSRC: "/BTCQRCODE.png", 
+    icon: "/bitcoin-icon.png"
+  }, 
+  {
+    name: "Ethereum", 
+    textAddress: "0xd9d7195486e0e7517C0beCc2e5c92fdA30216b08", 
+    qrCodeSRC: "/ETHQRCODE.png", 
+    icon: "/ethereum-icon.png"
+  }, 
+  {
+    name: "Solana", 
+    textAddress: "EbmW5JabHgL8UDZjvtvweGSQYCe8VSGoZWnbWxPnk7CA", 
+    qrCodeSRC: "/SOLANAQRCODE.png", 
+    icon:"/solana-icon.png"
+  }, 
+  {
+    name: "Tron", 
+    textAddress: "TT2RmPr8PSsvJ1UrJTLryCxSYEokNS5Cnz", 
+    qrCodeSRC: "/TRONQRCODE.png", 
+    icon:"/tron-icon.png"
+  }
+]
 export const INITIAL_NOTES: Note[] = [
   {
     id: 'note-welcome',

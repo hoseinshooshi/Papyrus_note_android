@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Note, Task, NOTE_COLORS, CharacterProfile } from '../types';
+import { Note, Task, NOTE_COLORS, CharacterProfile,Crypto } from '../types';
 import { NOTE_TEMPLATES } from '../data/templates';
 import { PixelAvatar } from './PixelAvatar';
 import { playTaskCompleteSound } from '../utils/taskAccomplishment';
@@ -15,8 +15,10 @@ import {
   Swords,
   Play,
   Pencil,
-  Trash2
+  Trash2, 
+  HeartHandshake
 } from 'lucide-react';
+import {CRYPTO_ADDRESS} from "../data/initialData.ts" 
 
 interface DashboardViewProps {
   notes: Note[];
@@ -28,6 +30,7 @@ interface DashboardViewProps {
   onToggleTask: (id: string) => void;
   onAddTask: (task: Omit<Task, 'id' | 'createdAt'>) => void;
   onEditTask?: (task: Task) => void;
+  onViewDonation: (crypto: Crypto) => void;
   onDeleteTask?: (id: string) => void;
   onViewAllNotes: () => void;
   onViewAllTasks: () => void;
@@ -50,11 +53,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onViewAllTasks,
   onOpenPomodoro,
   onOpenCharacter,
+  onViewDonation
 }) => {
   const [quickTaskText, setQuickTaskText] = useState('');
   const [taskToDeleteId, setTaskToDeleteId] = useState<string | null>(null);
   const [recentlyCompletedTaskId, setRecentlyCompletedTaskId] = useState<string | null>(null);
   
+
+
   const todayStr = new Date().toISOString().split('T')[0];
   const handleTaskToggle = (task: Task) => {
     if (!task.completed) {
@@ -361,8 +367,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   >
                     {/* Floating accomplishment badge */}
                     {recentlyCompletedTaskId === task.id && (
-                      <div className="absolute left-8 -top-2 pointer-events-none animate-task-accomplish-badge z-20 flex items-center gap-1 bg-[#231D17] text-[#FEF08A] text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs border border-[#F59E0B]/50">
-                        <Sparkles className="w-2.5 h-2.5 text-[#FBBF24]" />
+                      <div className="absolute left-8 -top-2 pointer-events-none animate-task-accomplish-badge z-20 flex items-center gap-1 bg-[#2E251C] text-[#F8F4EC] text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs border border-[#F59E0B]/50">
+                        <Sparkles className="w-2.5 h-2.5 text-[#F8F4EC]" />
                         <span>Completed!</span>
                       </div>
                     )}
@@ -463,12 +469,39 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 ))
               )}
             </div>
+            
+          </div>
+          <div id="donate-me" className="bg-[#FAF6EE] border border-[#E5DECD] rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-[#EADDCB] text-[#594735] flex items-center justify-center">
+                  <HeartHandshake className="w-4 h-4 text-[#ff857e]" />
+                </div>
+                <div>
+                  <h2 className="font-serif-display font-bold text-base text-[#3a5537]">
+                    Donate ME
+                  </h2>
+                  <span className="text-[11px] text-[#867664]">
+                    Your Donations keeps me GOING...
+                  </span>
+                </div>
+              </div>
+            </div>
+            {CRYPTO_ADDRESS.map(crypto=> (
+              <div key={crypto.name} className="flex items-start cursor-pointer gap-3 p-2.5 rounded-xl hover:bg-[#F2ECE0] transition-all border border-[#2E251C] group relative">
+                <button onClick={()=>onViewDonation(crypto)} className="flex w-full items-center cursor-pointer gap-2" >
+                  <img src={crypto.icon} alt={`${crypto.name} icon`} className="w-7 h-7"/>
+                  <div className="flex flex-col cursor-pointer">
+                  <span className="self-start">{crypto.name}</span>
+                  <span className="text-xs">{crypto.textAddress}</span>
+                  </div>
+                </button>
+                
+              </div>
+            ))}
           </div>
         </div>
-        <div id="donate-me">
-          <h2>About Us</h2>
-          <p>محتوای این بخش...</p>
-        </div>
+        
       </div>
     </div>
   );

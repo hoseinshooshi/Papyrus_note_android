@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { User } from 'firebase/auth';
-import { Note, Task, ViewMode, CharacterProfile, JournalEntry } from './types';
+import { Note, Task, ViewMode, CharacterProfile, JournalEntry,Crypto } from './types';
 import { storageService } from './services/storageService';
+import DonationModal from './components/DonationModal'
 import { 
   subscribeToAuth, 
   signOutUser,
@@ -58,6 +59,14 @@ export default function App() {
   const [isTaskEditorOpen, setIsTaskEditorOpen] = useState(false);
   const [isQuickCaptureOpen, setIsQuickCaptureOpen] = useState(false);
 
+
+  //for donation Modal
+  const [showDonateModal, setShowDonateModal] = useState(false);
+  const [viewingCrypto, setViewingCrypto] = useState<Crypto | null>(null);
+  const onViewDonation = (crypto:Crypto) =>{
+    setViewingCrypto(crypto)
+    setShowDonateModal(true)
+  }
   // Subscribe to Firebase Authentication
   useEffect(() => {
     const unsubscribeAuth = subscribeToAuth((user) => {
@@ -451,6 +460,7 @@ export default function App() {
           <DashboardView
             notes={notes}
             tasks={tasks}
+            onViewDonation={onViewDonation}
             character={character}
             onOpenNote={handleOpenNote}
             onCreateNote={handleCreateNote}
@@ -574,7 +584,14 @@ export default function App() {
         onDelete={handleDeleteTask}
         categories={categories}
       />
-
+      <DonationModal
+        crypto={viewingCrypto}
+        isOpen={showDonateModal}
+        onClose={() => {
+          setShowDonateModal(false);
+          setViewingCrypto(null);
+        }}
+      />
       {/* Quick Capture Modal */}
       <QuickCaptureModal
         isOpen={isQuickCaptureOpen}

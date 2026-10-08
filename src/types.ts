@@ -7,7 +7,12 @@ export interface ChecklistItem {
   text: string;
   completed: boolean;
 }
-
+export interface Crypto{
+  name: string, 
+  textAddress: string, 
+  qrCodeSRC:string, 
+  icon:string
+}
 export interface Note {
   id: string;
   title: string;
