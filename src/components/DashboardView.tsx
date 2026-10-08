@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Note, Task, NOTE_COLORS, CharacterProfile } from '../types';
 import { NOTE_TEMPLATES } from '../data/templates';
 import { PixelAvatar } from './PixelAvatar';
@@ -54,9 +54,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const [quickTaskText, setQuickTaskText] = useState('');
   const [taskToDeleteId, setTaskToDeleteId] = useState<string | null>(null);
   const [recentlyCompletedTaskId, setRecentlyCompletedTaskId] = useState<string | null>(null);
-
+  
   const todayStr = new Date().toISOString().split('T')[0];
-
   const handleTaskToggle = (task: Task) => {
     if (!task.completed) {
       playTaskCompleteSound();
@@ -465,6 +464,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               )}
             </div>
           </div>
+        </div>
+        <div id="donate-me">
+          <h2>About Us</h2>
+          <p>محتوای این بخش...</p>
         </div>
       </div>
     </div>

@@ -59,6 +59,11 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
               {notesCount}
             </span>
           )}
+          {notesCount > 9 && (
+            <span className="absolute top-0 right-1 px-1 py-0.2 bg-[#E0D4BE] text-[#4A3D2D] rounded-full text-[8px] font-bold">
+              9+
+            </span>
+          )}
         </button>
 
         <button
@@ -74,6 +79,11 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
           {journalsCount > 0 && (
             <span className="absolute top-0 right-1 px-1 py-0.2 bg-[#E0D4BE] text-[#4A3D2D] rounded-full text-[8px] font-bold">
               {journalsCount}
+            </span>
+          )}
+          {journalsCount > 9 && (
+            <span className="absolute top-0 right-1 px-1 py-0.2 bg-[#E0D4BE] text-[#4A3D2D] rounded-full text-[8px] font-bold">
+              9+
             </span>
           )}
         </button>
@@ -93,6 +103,13 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
               {pendingTasksCount}
             </span>
           )}
+          {
+            pendingTasksCount > 9 && (
+              <span className="absolute top-0 right-1 px-1 py-0.2 bg-[#C29D38] text-white rounded-full text-[8px] font-bold">
+              9+
+              </span>
+            )
+          }
         </button>
       </div>
     </div>

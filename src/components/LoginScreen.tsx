@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { PapyrusBrandLogo } from './FullSvg';
-import { PixelSceneIllustration } from './PixelSceneIllustration';
 import { 
   Cloud, 
   ShieldCheck, 
-
   AlertCircle,
   TriangleAlert
 } from 'lucide-react';
@@ -55,7 +53,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
 
           {/* Featured Pixel Art Showcase Vignette */}
           <div className="w-full max-w-[280px] h-36 rounded-2xl overflow-hidden border-2 border-[#D4B37D] shadow-md relative group">
-            <img src={image} alt="" />
+            <img src={image} alt="Login Page Image" />
             <div className="absolute inset-x-0 bottom-0  p-2 text-center">
             </div>
           </div>
@@ -134,7 +132,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = () => {
           </button>
 
           <p className="text-[11px] text-center text-[#8C7D6D] leading-normal">
-            Sign in with your Google account to access and store your notes, tasks, and avatar securely in the cloud.
+            Sign in with your Google account.
           </p>
         </div>
       </div>

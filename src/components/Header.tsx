@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ViewMode, CharacterProfile } from '../types';
 import { PapyrusBrandLogo } from './FullSvg';
 import { PixelAvatar } from './PixelAvatar';
@@ -10,13 +10,11 @@ import {
   Search, 
   Flame, 
   User as UserIcon,
-  Cloud,
   LogOut,
   LogIn,
   ChevronDown,
   Feather,
-  ShieldCheck,
-  Sparkles
+  HeartHandshake,
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -51,7 +49,24 @@ export const Header: React.FC<HeaderProps> = ({
   isCloudSynced = true,
 }) => {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [scrolldonate, setScrollDonate] = useState(false)
+  useEffect(() => {
+  if (!scrolldonate || currentView !== 'dashboard') {
+    return;
+  }
 
+  const frame = requestAnimationFrame(() => {
+    document.getElementById('donate-me')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+
+    setScrollDonate(false);
+  });
+
+  return () => cancelAnimationFrame(frame);
+  }, [currentView, scrolldonate]);
+  
   return (
     <header className="sticky top-0 z-30 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#E6DEC9] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -241,7 +256,6 @@ export const Header: React.FC<HeaderProps> = ({
                         <PixelAvatar character={character} size="sm" animated={true} />
                         <div>
                           <div className="text-xs font-bold text-[#2A231C]">{character.name}</div>
-                          <div className="text-[10px] text-[#7A6D5E]">Companion Avatar Profile</div>
                         </div>
                       </div>
                       <span className="text-[10px] font-bold text-[#8C724B] uppercase tracking-wide">
@@ -277,6 +291,17 @@ export const Header: React.FC<HeaderProps> = ({
                           Notes & Thoughts
                         </span>
                         <span className="text-[10px] text-[#8C7A68]">{notesCount} notes</span>
+                      </button>
+                      <button onClick={() => {
+                          setShowUserDropdown(false);
+                          setScrollDonate(true)
+                          onViewChange('dashboard')
+                          
+                        }} className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#3a5537] cursor-pointer hover:bg-[#F2EDE1]">
+                        <span className="flex items-center gap-2">
+                          <HeartHandshake className="w-3.5 h-3.5 text-[#ff857e]" />
+                          Support Me
+                        </span>
                       </button>
                     </div>
 
