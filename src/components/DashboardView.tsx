@@ -488,12 +488,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </div>
             </div>
             {CRYPTO_ADDRESS.map(crypto=> (
-              <div key={crypto.name} className="flex items-start cursor-pointer gap-3 p-2.5 rounded-xl hover:bg-[#F2ECE0] transition-all border border-[#2E251C] group relative">
-                <button onClick={()=>onViewDonation(crypto)} className="flex w-full items-center cursor-pointer gap-2" >
+              <div key={crypto.name} className="flex items-start overflow-hidden cursor-pointer gap-3 p-2.5 rounded-xl hover:bg-[#F2ECE0] transition-all border border-[#2E251C] group relative">
+                <button onClick={()=>onViewDonation(crypto)} className="flex w-full items-center overflow-hidden cursor-pointer gap-2" >
                   <img src={crypto.icon} alt={`${crypto.name} icon`} className="w-7 h-7"/>
                   <div className="flex flex-col cursor-pointer">
                   <span className="self-start">{crypto.name}</span>
-                  <span className="text-xs">{crypto.textAddress}</span>
+                  <span className="text-xs overflow-hidden">{crypto.textAddress}</span>
                   </div>
                 </button>
                 
