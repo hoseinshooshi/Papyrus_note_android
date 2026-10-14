@@ -176,7 +176,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
               onClick={() => setViewMode('calendar')}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 viewMode === 'calendar'
-                  ? 'bg-[#2E251C] text-[#FEF08A] shadow-xs'
+                  ? 'bg-[#2E251C] text-white shadow-xs'
                   : 'text-[#695B4C] hover:text-[#2A231C]'
               }`}
             >
@@ -188,7 +188,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
               onClick={() => setViewMode('list')}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 viewMode === 'list'
-                  ? 'bg-[#2E251C] text-[#FEF08A] shadow-xs'
+                  ? 'bg-[#2E251C] text-white shadow-xs'
                   : 'text-[#695B4C] hover:text-[#2A231C]'
               }`}
             >
@@ -239,7 +239,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
                 }`}
                 title={`${m.label}: ${count} entries`}
               >
-                <span>{m.emoji}</span>
+                <span><img src={m.emoji} alt={m.label} className='w-6 h-6' /></span>
                 <span className="font-semibold">{m.label}</span>
                 {count > 0 && (
                   <span className="ml-0.5 px-1.5 py-0.2 bg-[#EDE4D0] text-[#4A3C2D] rounded-full text-[10px] font-bold">
@@ -358,7 +358,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
                     {hasEntry ? (
                       <div className="mt-1">
                         <div className="flex items-center gap-1">
-                          <span className="text-sm">{moodCfg?.emoji}</span>
+                          <span className="text-sm"><span><img src={moodCfg.emoji} alt={moodCfg.label} className='w-6 h-6' /></span></span>
                           <span className="text-[10px] font-bold text-[#45382B] truncate hidden sm:inline">
                             {dayJournals[0].title}
                           </span>
@@ -405,7 +405,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
                 <button
                   type="button"
                   onClick={() => onCreateJournal(selectedCalendarDate)}
-                  className="px-3 py-1.5 rounded-xl bg-[#2E251C] hover:bg-[#433629] text-[#FEF08A] text-xs font-bold shadow-xs cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl bg-[#2E251C] hover:bg-[#433629] text-white text-xs font-bold shadow-xs cursor-pointer"
                 >
                   + Write Entry
                 </button>
@@ -436,7 +436,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
 
                         <div className="flex items-center justify-between gap-2 mb-2">
                           <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold border ${moodCfg.badgeClass}`}>
-                            <span>{moodCfg.emoji}</span>
+                            <span><span><img src={moodCfg.emoji} alt={moodCfg.label} className='w-6 h-6' /></span></span>
                             <span>{moodCfg.label}</span>
                           </span>
 
@@ -593,7 +593,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
                         </span>
 
                         <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold border ${moodCfg.badgeClass}`}>
-                          <span>{moodCfg.emoji}</span>
+                          <span><span><img src={moodCfg.emoji} alt={moodCfg.label} className='w-6 h-6' /></span></span>
                           <span>{moodCfg.label}</span>
                         </span>
                       </div>

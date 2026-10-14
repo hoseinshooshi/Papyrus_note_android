@@ -208,7 +208,7 @@ export const Header: React.FC<HeaderProps> = ({
                   
                   <div className="hidden sm:block text-left">
                     <div className="text-[11px] font-bold text-[#2A231C] leading-none group-hover:text-[#8C724B] transition-colors truncate max-w-[85px]">
-                      {user.displayName?.split(' ')[0] || character.name}
+                      {user.displayName?.split(' ')[0] || character.name} 
                     </div>
                   </div>
                   <ChevronDown className="w-3 h-3 text-[#7A6D5E] hidden sm:block" />
@@ -255,7 +255,7 @@ export const Header: React.FC<HeaderProps> = ({
                       <div className="flex items-center gap-2.5">
                         <PixelAvatar character={character} size="sm" animated={true} />
                         <div>
-                          <div className="text-xs font-bold text-[#2A231C]">{character.name}</div>
+                          <div className="text-xs font-bold text-[#2A231C] overflow-hidden">{user.displayName}</div>
                         </div>
                       </div>
                       <span className="text-[10px] font-bold text-[#8C724B] uppercase tracking-wide">

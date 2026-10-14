@@ -106,7 +106,7 @@ export const CharacterCreator: React.FC<CharacterCreatorProps> = ({
                 />
               ) : (
                 <div className="w-16 h-16 rounded-2xl bg-[#8C724B] text-white flex items-center justify-center font-bold text-xl shadow-xs">
-                  {currentUser?.displayName?.[0]?.toUpperCase() || 'U'}
+                  {currentUser?.displayName?.[0]?.toUpperCase() || 'U'} 
                 </div>
               )}
               <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white flex items-center justify-center shadow-2xs" title="Cloud Active">
@@ -120,22 +120,10 @@ export const CharacterCreator: React.FC<CharacterCreatorProps> = ({
                 <h2 className="text-xl font-serif font-bold text-[#2A231C]">
                   {currentUser?.displayName || name || 'Signed in Traveler'}
                 </h2>
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#DCFCE7] text-[#15803D] border border-[#86EFAC]">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  Google Verified
-                </span>
               </div>
               <p className="text-xs text-[#7A6D5E]">
                 {currentUser?.email || 'Connected to Google Account Vault'}
               </p>
-              <div className="flex items-center gap-2 pt-0.5 text-[11px] text-[#8C7A68]">
-                <span className="inline-flex items-center gap-1 font-semibold text-[#166534]">
-                  <Cloud className="w-3.5 h-3.5" />
-                  Firestore Cloud Sync Active
-                </span>
-                <span>•</span>
-                <span>All notes, journals, and companions securely backed up</span>
-              </div>
             </div>
           </div>
 

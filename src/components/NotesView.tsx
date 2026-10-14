@@ -270,6 +270,14 @@ export const NotesView: React.FC<NotesViewProps> = ({
       {/* Grid View */}
       {layoutMode === 'grid' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {!sortedNotes && (
+            <div className='flex flex-col align-cnter justify-center gap-2'>
+                  <div className="p-6 text-center text-xs text-[#8C7E6F] italic">
+                    No tasks due today. Everything is calm!
+                  </div>
+                  <img src="/tasks_akriti.svg" className='w-5/10 h-5/10 self-center' />
+            </div>
+          )}
           {sortedNotes.map(note => {
             const colorConfig = NOTE_COLORS[note.color] || NOTE_COLORS.parchment;
             return (
@@ -378,6 +386,14 @@ export const NotesView: React.FC<NotesViewProps> = ({
       {/* List View */}
       {layoutMode === 'list' && (
         <div className="bg-[#FAF7F0] border border-[#E5DECC] rounded-2xl divide-y divide-[#EFE8D9] overflow-hidden shadow-2xs">
+          {!sortedNotes && (
+            <div className='flex flex-col align-cnter justify-center gap-2'>
+                  <div className="p-6 text-center text-xs text-[#8C7E6F] italic">
+                    No tasks due today. Everything is calm!
+                  </div>
+                  <img src="/tasks_akriti.svg" className='w-5/10 h-5/10 self-center' />
+            </div>
+          )}
           {sortedNotes.map(note => {
             const colorConfig = NOTE_COLORS[note.color] || NOTE_COLORS.parchment;
             return (

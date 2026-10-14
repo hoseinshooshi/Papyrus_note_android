@@ -41,7 +41,10 @@ export type JournalMood =
   | 'reflective'  // ☕ Reflective & Grounded
   | 'melancholy'  // 🌧️ Melancholy & Quiet
   | 'anxious'     // 🌪️ Stressed & Anxious
-  | 'weary';      // 😴 Weary & Resting
+  | 'weary'      // 😴 Weary & Resting
+  | 'angry'     // 😴 Weary & Resting
+  | 'happy'     // 😴 Weary & Resting
+  | 'notwell';      // 😴 Weary & Resting
 
 export interface JournalAudioRecording {
   audioDataUrl?: string;
@@ -83,7 +86,7 @@ export const JOURNAL_MOODS: Record<JournalMood, MoodConfig> = {
     id: 'radiant',
     label: 'Radiant',
     tagline: 'Joyful, vibrant & inspired',
-    emoji: '☀️',
+    emoji: '/moods/Radiant.svg',
     bgClass: 'bg-[#FEFCE8]',
     borderClass: 'border-[#FDE047]',
     textClass: 'text-[#854D0E]',
@@ -94,7 +97,7 @@ export const JOURNAL_MOODS: Record<JournalMood, MoodConfig> = {
     id: 'peaceful',
     label: 'Peaceful',
     tagline: 'Calm, balanced & serene',
-    emoji: '🌿',
+    emoji: '/moods/Peaceful.svg',
     bgClass: 'bg-[#F0FDF4]',
     borderClass: 'border-[#BBF7D0]',
     textClass: 'text-[#166534]',
@@ -105,7 +108,7 @@ export const JOURNAL_MOODS: Record<JournalMood, MoodConfig> = {
     id: 'motivated',
     label: 'Motivated',
     tagline: 'Energized & driven to create',
-    emoji: '⚡',
+    emoji: '/moods/Motivated.svg',
     bgClass: 'bg-[#FFFBEB]',
     borderClass: 'border-[#FDE68A]',
     textClass: 'text-[#92400E]',
@@ -116,7 +119,7 @@ export const JOURNAL_MOODS: Record<JournalMood, MoodConfig> = {
     id: 'focused',
     label: 'Deep Focus',
     tagline: 'In the flow & clear-minded',
-    emoji: '🧠',
+    emoji: '/moods/Deep-Focus.svg',
     bgClass: 'bg-[#F0F9FF]',
     borderClass: 'border-[#BAE6FD]',
     textClass: 'text-[#075985]',
@@ -127,7 +130,7 @@ export const JOURNAL_MOODS: Record<JournalMood, MoodConfig> = {
     id: 'reflective',
     label: 'Reflective',
     tagline: 'Thoughtful, observing & introspective',
-    emoji: '☕',
+    emoji:'/moods/Reflective.svg',
     bgClass: 'bg-[#FAF6EE]',
     borderClass: 'border-[#E6DEC9]',
     textClass: 'text-[#5C4A38]',
@@ -138,7 +141,7 @@ export const JOURNAL_MOODS: Record<JournalMood, MoodConfig> = {
     id: 'melancholy',
     label: 'Melancholy',
     tagline: 'Quiet, gentle sorrow & low energy',
-    emoji: '🌧️',
+    emoji: '/moods/Melancholy.svg',
     bgClass: 'bg-[#F1F5F9]',
     borderClass: 'border-[#CBD5E1]',
     textClass: 'text-[#334155]',
@@ -149,7 +152,7 @@ export const JOURNAL_MOODS: Record<JournalMood, MoodConfig> = {
     id: 'anxious',
     label: 'Restless',
     tagline: 'Overwhelmed or processing worries',
-    emoji: '🌪️',
+    emoji: '/moods/Restless.svg',
     bgClass: 'bg-[#FFF7ED]',
     borderClass: 'border-[#FED7AA]',
     textClass: 'text-[#9A3412]',
@@ -160,12 +163,45 @@ export const JOURNAL_MOODS: Record<JournalMood, MoodConfig> = {
     id: 'weary',
     label: 'Weary',
     tagline: 'Fatigued, seeking solace and rest',
-    emoji: '😴',
+    emoji: '/moods/Weary.svg',
     bgClass: 'bg-[#FAF5FF]',
     borderClass: 'border-[#E9D5FF]',
     textClass: 'text-[#6B21A8]',
     badgeClass: 'bg-[#F3E8FF] text-[#581C87] border-[#D8B4FE]',
     accentColor: '#A855F7',
+  },
+  happy: {
+    id: 'happy',
+    label: 'happy',
+    tagline: '',
+    emoji: '/moods/happy.svg',
+    bgClass: 'bg-[#376FD0]/70',
+    borderClass: 'border-[#376FD0]',
+    textClass: 'text-[#6B21A8]',
+    badgeClass: 'bg-[#376FD0]/70 text-[#376FD0] border-[#376FD0]',
+    accentColor: '#376FD0',
+  },
+  angry: {
+    id: 'angry',
+    label: 'angry',
+    tagline: '',
+    emoji: '/moods/Angry.svg',
+    bgClass: 'bg-[#8b2237]/90',
+    borderClass: 'border-[#8b2237]',
+    textClass: 'text-[#6B21A8]',
+    badgeClass: 'bg-[#8b2237]/70 text-[#8b2237] border-[#8b2237]',
+    accentColor: '#8b2237',
+  },
+  notwell: {
+    id: 'notwell',
+    label: 'notwell',
+    tagline: '',
+    emoji: '/moods/Not-Well.svg',
+    bgClass: 'bg-[#53505A]/90',
+    borderClass: 'border-[#53505A]',
+    textClass: 'text-[#53505A]',
+    badgeClass: 'bg-[#53505A]/70 text-[#53505A] border-[#53505A]',
+    accentColor: '#53505A',
   },
 };
 

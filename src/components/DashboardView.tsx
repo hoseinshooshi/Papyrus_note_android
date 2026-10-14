@@ -19,12 +19,14 @@ import {
   HeartHandshake
 } from 'lucide-react';
 import {CRYPTO_ADDRESS} from "../data/initialData.ts" 
+import { User } from 'firebase/auth';
 
 interface DashboardViewProps {
   notes: Note[];
   tasks: Task[];
   character: CharacterProfile;
   onOpenNote: (note: Note) => void;
+  currentUser?: User | null;
   onCreateNote: () => void;
   onCreateFromTemplate: (templateId: string) => void;
   onToggleTask: (id: string) => void;
@@ -53,7 +55,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onViewAllTasks,
   onOpenPomodoro,
   onOpenCharacter,
-  onViewDonation
+  onViewDonation, 
+  currentUser
 }) => {
   const [quickTaskText, setQuickTaskText] = useState('');
   const [taskToDeleteId, setTaskToDeleteId] = useState<string | null>(null);
@@ -114,14 +117,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           {/* Left: Greeting & Text */}
           <div className="space-y-2 max-w-xl">
             <span className="text-xs uppercase tracking-widest text-[#857461] font-semibold flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-[#A3895B]" />
               {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
             </span>
             <h1 className="text-3xl sm:text-4xl font-serif-display font-bold text-[#2A231C]">
-              {greeting}, {character.name}.
+              {greeting}, {currentUser?.displayName || "User"}.
             </h1>
             <p className="text-sm text-[#6C5E4E] leading-relaxed">
-              Your sanctum is prepared. You have <strong className="text-[#2A231C]">{pendingTasks.length} pending obligations</strong> and <strong className="text-[#2A231C]">{notes.length} saved manuscripts</strong>.
+              You have <strong className="text-[#2A231C]">{pendingTasks.length} pending Tasks.</strong>
             </p>
 
             <div className="flex items-center gap-3 pt-2">
@@ -142,44 +144,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </button>
             </div>
           </div>
-
-          {/* Right: Tactile User Profile & Pixel Avatar Card */}
-          <div 
-            onClick={onOpenCharacter}
-            className="p-4 rounded-2xl bg-[#F2ECE0] border border-[#DDD3BF] shadow-xs flex items-center gap-4 cursor-pointer hover:border-[#C4B79E] transition-all group"
-            title="Click to customize your pixel avatar"
-          >
-            <div className="relative">
-              <div className="p-2 rounded-xl bg-[#231E18] border border-[#D4B37D]">
-                <PixelAvatar character={character} size="md" animated={true} />
-              </div>
-            </div>
-
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="font-serif-display font-bold text-sm text-[#2A231C] group-hover:text-[#8C724B] transition-colors">
-                  {character.name}
-                </span>
-                <span className="px-2 py-0.5 rounded bg-[#E4DCB] text-[#554737] text-[10px] font-semibold">
-                  Pixel Avatar
-                </span>
-              </div>
-              <p className="text-[11px] text-[#7A6C5B]">
-                Click to choose another avatar
-              </p>
-              <div className="flex items-center gap-2 text-[10px] text-[#8C7D6D] font-mono">
-                <span>{character.totalFocusMinutes || 0}m focused</span>
-                <span>•</span>
-                <span>{character.completedPomodoros || 0} pomodoros</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Ready-to-use Template Pill Row */}
         <div className="mt-6 pt-5 border-t border-[#E8DEC9] flex items-center gap-2 overflow-x-auto">
           <span className="text-xs font-bold text-[#726353] flex-shrink-0 mr-1">
-            Manuscript Templates:
+            Notes Templates:
           </span>
           {NOTE_TEMPLATES.map(tpl => (
             <button
@@ -213,7 +183,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-serif-display font-bold text-[#2A231C] flex items-center gap-2">
                   <Pin className="w-4 h-4 text-[#B08D57] fill-[#B08D57]" />
-                  Pinned Manuscripts
+                  Pinned Notes
                 </h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -267,7 +237,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <ArrowRight className="w-3 h-3" />
               </button>
             </div>
-
+            {!recentNotes && (
+            <div className='flex flex-col align-cnter justify-center gap-2'>
+                  <div className="p-6 text-center text-xs text-[#8C7E6F] italic">
+                    No Notes Were Found.
+                  </div>
+                  <img src="/notes_akriti.svg" className='w-5/10 h-5/10 self-center' />
+            </div>
+            )}
             <div className="space-y-2.5">
               {recentNotes.map(note => {
                 const colorConfig = NOTE_COLORS[note.color] || NOTE_COLORS.parchment;
@@ -354,8 +331,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             {/* Task list items */}
             <div className="space-y-2 pt-1 max-h-[380px] overflow-y-auto">
               {todayTasks.length === 0 ? (
-                <div className="p-6 text-center text-xs text-[#8C7E6F] italic">
-                  No tasks due today. Everything is calm!
+                <div className='flex flex-col align-cnter justify-center gap-2'>
+                  <div className="p-6 text-center text-xs text-[#8C7E6F] italic">
+                    No tasks due today. Everything is calm!
+                  </div>
+                  <img src="/tasks_akriti.svg" className='w-5/10 h-5/10 self-center' />
                 </div>
               ) : (
                 todayTasks.slice(0, 7).map(task => (
