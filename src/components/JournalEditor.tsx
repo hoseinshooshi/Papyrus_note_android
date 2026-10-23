@@ -80,7 +80,7 @@ export const JournalEditor: React.FC<JournalEditorProps> = ({
   const [viewMode, setViewMode] = useState<'edit' | 'split' | 'preview'>('edit');
   const [copySuccess, setCopySuccess] = useState(false);
   const [isSaved, setIsSaved] = useState(true);
-  const [isFullScreen, setIsFullScreen] = useState(true);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
   // Accordion open/collapse states
@@ -526,7 +526,7 @@ export const JournalEditor: React.FC<JournalEditorProps> = ({
                 type="button"
                 onClick={() => setViewMode('edit')}
                 className={`p-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                  viewMode === 'edit' ? 'bg-[#2E251C] text-[#FEF08A] shadow-xs' : 'text-[#6D5F50] hover:text-[#2E251C]'
+                  viewMode === 'edit' ? 'bg-[#2E251C] text-white shadow-xs' : 'text-[#6D5F50] hover:text-[#2E251C]'
                 }`}
                 title="Edit Mode"
               >
@@ -536,7 +536,7 @@ export const JournalEditor: React.FC<JournalEditorProps> = ({
                 type="button"
                 onClick={() => setViewMode('split')}
                 className={`p-1.5 rounded-lg text-xs font-medium hidden md:block transition-all cursor-pointer ${
-                  viewMode === 'split' ? 'bg-[#2E251C] text-[#FEF08A] shadow-xs' : 'text-[#6D5F50] hover:text-[#2E251C]'
+                  viewMode === 'split' ? 'bg-[#2E251C] text-white shadow-xs' : 'text-[#6D5F50] hover:text-[#2E251C]'
                 }`}
                 title="Side-by-Side Split Mode"
               >
@@ -546,7 +546,7 @@ export const JournalEditor: React.FC<JournalEditorProps> = ({
                 type="button"
                 onClick={() => setViewMode('preview')}
                 className={`p-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                  viewMode === 'preview' ? 'bg-[#2E251C] text-[#FEF08A] shadow-xs' : 'text-[#6D5F50] hover:text-[#2E251C]'
+                  viewMode === 'preview' ? 'bg-[#2E251C] text-white shadow-xs' : 'text-[#6D5F50] hover:text-[#2E251C]'
                 }`}
                 title="Preview Mode"
               >
@@ -595,7 +595,7 @@ export const JournalEditor: React.FC<JournalEditorProps> = ({
             <button
               type="button"
               onClick={handleSave}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-[#2E251C] hover:bg-[#433629] text-[#FEF08A] text-xs font-bold shadow-xs cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-[#2E251C] hover:bg-[#433629] text-white text-xs font-bold shadow-xs cursor-pointer"
             >
               <Save className="w-3.5 h-3.5" />
               Save & Close
@@ -727,7 +727,9 @@ export const JournalEditor: React.FC<JournalEditorProps> = ({
                               : 'bg-white/60 border-[#E8DEC7] hover:bg-white/90 opacity-90'
                           }`}
                         >
-                          <span className="text-lg">{m.emoji}</span>
+                          <span className="text-lg">
+                            <img src={m.emoji} className='w-5 h-5' />
+                          </span>
                           <div className="overflow-hidden">
                             <div className={`text-xs ${m.textClass} truncate font-bold`}>{m.label}</div>
                             <div className="text-[9px] text-[#8C7A68] truncate">{m.tagline.split(',')[0]}</div>
@@ -967,19 +969,6 @@ export const JournalEditor: React.FC<JournalEditorProps> = ({
                     <div className="w-px h-4 bg-[#DFD5C2] mx-1" />
 
                     {/* Instant Voice Dictation */}
-                    <button
-                      type="button"
-                      onClick={isVoiceRecording ? stopVoiceRecording : startVoiceRecording}
-                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                        isVoiceRecording
-                          ? 'bg-red-600 text-white shadow-xs animate-pulse ring-2 ring-red-400'
-                          : 'bg-[#FAF3E3] hover:bg-[#F3E7CD] text-[#7A5B28] border border-[#DFCFA8]'
-                      }`}
-                      title={isVoiceRecording ? "Finish voice recording" : "Dictate text with live audio waveform"}
-                    >
-                      <Mic className={`w-3.5 h-3.5 ${isVoiceRecording ? 'text-white' : 'text-[#A87E3B]'}`} />
-                      <span>{isVoiceRecording ? 'Listening...' : 'Voice Dictate'}</span>
-                    </button>
                   </div>
                 )}
 
@@ -1119,7 +1108,7 @@ Tip: Use the toolbar above to format headings, bullet points, checklists, or ins
             <button
               type="button"
               onClick={handleSave}
-              className="px-4 py-1.5 rounded-lg bg-[#2E251C] hover:bg-[#45372A] text-[#FEF08A] text-xs font-semibold shadow-xs transition-all cursor-pointer"
+              className="px-4 py-1.5 rounded-lg bg-[#2E251C] hover:bg-[#45372A] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
             >
               Done
             </button>

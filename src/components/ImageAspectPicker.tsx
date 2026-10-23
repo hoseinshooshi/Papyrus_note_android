@@ -145,7 +145,7 @@ export const ImageAspectPicker: React.FC<ImageAspectPickerProps> = ({
                     onClick={() => handleChangeRatio(r.id)}
                     className={`px-2 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                       isActive
-                        ? 'bg-[#2E251C] text-[#FEF08A] shadow-xs'
+                        ? 'bg-[#2E251C] text-white shadow-xs'
                         : 'bg-[#EDE7DB] hover:bg-[#E2D9C8] text-[#554737]'
                     }`}
                     title={r.desc}
@@ -222,7 +222,7 @@ export const ImageAspectPicker: React.FC<ImageAspectPickerProps> = ({
                     onClick={() => handleChangeRatio(r.id)}
                     className={`py-1.5 px-2 rounded-xl text-center border text-xs font-bold transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-[#2E251C] text-[#FEF08A] border-[#2E251C] shadow-xs'
+                        ? 'bg-[#2E251C] text-white border-[#2E251C] shadow-xs'
                         : 'bg-[#FAF6EE] text-[#554737] border-[#E2D8C3] hover:bg-[#F2ECE0]'
                     }`}
                   >

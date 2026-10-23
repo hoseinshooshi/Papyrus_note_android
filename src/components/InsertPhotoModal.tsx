@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Image as ImageIcon, Upload, Link as LinkIcon, Sparkles, X, Check } from 'lucide-react';
+import { Image as ImageIcon, Upload, Link as LinkIcon, Sparkles, X, Check, Image } from 'lucide-react';
 
 interface InsertPhotoModalProps {
   isOpen: boolean;
@@ -170,8 +170,8 @@ export const InsertPhotoModal: React.FC<InsertPhotoModalProps> = ({
                 : 'border-transparent text-[#7F7162] hover:text-[#2C2319]'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            Aesthetic Presets
+            <Image className="w-3.5 h-3.5" />
+            Presets
           </button>
         </div>
 
@@ -302,7 +302,7 @@ export const InsertPhotoModal: React.FC<InsertPhotoModalProps> = ({
             type="button"
             onClick={handleSubmit}
             disabled={!previewUrl && !(activeTab === 'url' && urlInput.trim())}
-            className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-[#2E251C] hover:bg-[#433629] text-[#FEF08A] text-xs font-bold shadow-xs disabled:opacity-50 transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-[#2E251C] hover:bg-[#433629] text-white text-xs font-bold shadow-xs disabled:opacity-50 transition-all cursor-pointer"
           >
             <Check className="w-3.5 h-3.5" />
             Insert Into Content

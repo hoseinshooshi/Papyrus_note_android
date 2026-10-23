@@ -67,7 +67,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({
   const [viewMode, setViewMode] = useState<'edit' | 'split' | 'preview'>('edit');
   const [copySuccess, setCopySuccess] = useState(false);
   const [isSaved, setIsSaved] = useState(true);
-  const [isFullScreen, setIsFullScreen] = useState(true);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
   const [openSections, setOpenSections] = useState({
     properties: true,
@@ -477,7 +477,7 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({
             <button
               type="button"
               onClick={handleClose}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#2E251C] hover:bg-[#433629] text-[#FEF08A] text-xs font-bold shadow-xs cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#2E251C] hover:bg-[#433629] text-white text-xs font-bold shadow-xs cursor-pointer"
               title="Save changes and close"
             >
               <Save className="w-3.5 h-3.5" />
