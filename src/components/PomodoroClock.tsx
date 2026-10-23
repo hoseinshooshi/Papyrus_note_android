@@ -17,7 +17,8 @@ import {
   Sliders,
   Settings,
   Zap,
-  Bell
+  Bell,
+  Pizza
 } from 'lucide-react';
 import { playGentleChime } from '../utils/audioChime';
 
@@ -171,11 +172,8 @@ export const PomodoroClock: React.FC<PomodoroClockProps> = ({
             <Flame className="w-3.5 h-3.5 text-[#B08D57]" /> Sanctum of Focus
           </span>
           <h1 className="text-3xl sm:text-4xl font-serif-display font-bold text-[#2A231C] mt-1">
-            Pomodoro Chamber
+            Pomodoro TIMER
           </h1>
-          <p className="text-xs text-[#7A6D5E]">
-            Watch {character.name} focus and channel momentum as the sands of time flow.
-          </p>
         </div>
 
         {/* Top Right Controls */}
@@ -328,7 +326,7 @@ export const PomodoroClock: React.FC<PomodoroClockProps> = ({
                 : 'text-[#6C5E4E] hover:text-[#2A231C]'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5" />
+            <Pizza className="w-3.5 h-3.5" />
             <span>Long Break ({longBreakMinutes}m)</span>
           </button>
         </div>
@@ -365,34 +363,10 @@ export const PomodoroClock: React.FC<PomodoroClockProps> = ({
                 isWorking={isRunning}
               />
             </div>
-
-            {/* Live Status Badge */}
-            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2">
-              <span className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-sm flex items-center gap-1.5 whitespace-nowrap ${
-                isRunning
-                  ? 'bg-[#2E251C] text-[#FEF08A] ring-2 ring-[#FEF08A]/50'
-                  : 'bg-[#EFE9DC] text-[#695B4C] border border-[#DDD2BC]'
-              }`}>
-                {isRunning ? (
-                  <>
-                    <span className="w-2 h-2 rounded-full bg-[#FEF08A] animate-ping" />
-                    Focus Flow Active
-                  </>
-                ) : (
-                  <>
-                    <span className="w-2 h-2 rounded-full bg-[#8E7E6F]" />
-                    Ready to Begin
-                  </>
-                )}
-              </span>
-            </div>
           </div>
 
           {/* Character Dialogue / Action Status */}
           <div className="pt-2 space-y-1">
-            <h3 className="font-serif-display text-lg font-bold text-[#2A231C]">
-              {character.name}
-            </h3>
             <p className="text-xs text-[#7A6D5E] italic">
               {isRunning
                 ? mode === 'work'
@@ -457,11 +431,12 @@ export const PomodoroClock: React.FC<PomodoroClockProps> = ({
       </div>
 
       {/* Toggleable Ambient Nature & Lo-Fi Focus Audio Player */}
-      <AmbientAudioPlayer
+      {/* SOUNDS TODO LATER */}
+      {/* <AmbientAudioPlayer
         isFocusTimerRunning={isRunning && mode === 'work'}
         autoPlayOnFocus={autoPlayAmbient}
         onAutoPlayChange={setAutoPlayAmbient}
-      />
+      /> */}
 
       {/* Presets Row & Optional Task Association */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -505,29 +480,6 @@ export const PomodoroClock: React.FC<PomodoroClockProps> = ({
             ))}
           </select>
         </div>
-      </div>
-
-      {/* Character Profile Quick Bar */}
-      <div className="bg-[#FAF7F0] border border-[#E2D8C3] rounded-2xl p-4 shadow-2xs flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <PixelAvatar character={character} size="sm" animated={true} />
-          <div>
-            <h4 className="text-xs font-bold text-[#2A231C]">
-              {character.name} • Pixel Avatar
-            </h4>
-            <p className="text-[11px] text-[#7A6D5E]">
-              {character.completedPomodoros || 0} pomodoros completed • {character.totalFocusMinutes || 0} minutes focused
-            </p>
-          </div>
-        </div>
-
-        <button
-          onClick={onOpenCharacterCreator}
-          className="px-3 py-1.5 rounded-xl bg-[#EFE9DC] hover:bg-[#E6DEC9] border border-[#DDD2BC] text-xs font-semibold text-[#483B2D] flex items-center gap-1 transition-all cursor-pointer"
-        >
-          <span>Change Avatar</span>
-          <ChevronRight className="w-3.5 h-3.5" />
-        </button>
       </div>
     </div>
   );

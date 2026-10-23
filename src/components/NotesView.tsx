@@ -10,9 +10,7 @@ import {
   Download, 
   Trash2, 
   Copy, 
-  Filter, 
   BookOpen, 
-  Sparkles,
   ChevronDown,
   Tag
 } from 'lucide-react';
@@ -104,7 +102,6 @@ export const NotesView: React.FC<NotesViewProps> = ({
               onClick={() => setShowTemplatesDropdown(!showTemplatesDropdown)}
               className="px-3 py-2 rounded-xl bg-[#EFE9DC] hover:bg-[#E7DEC9] border border-[#DDD2BC] text-xs font-semibold text-[#483B2D] flex items-center gap-1.5 transition-all shadow-2xs"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#9A7D4E]" />
               <span>Templates</span>
               <ChevronDown className="w-3 h-3" />
             </button>

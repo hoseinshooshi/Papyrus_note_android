@@ -142,7 +142,7 @@ export const AmbientAudioPlayer: React.FC<AmbientAudioPlayerProps> = ({
             id="ambient-audio-toggle"
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer active:scale-95 ${
               isPlaying
-                ? 'bg-[#2E251C] text-[#FEF08A] hover:bg-[#433629]'
+                ? 'bg-[#2E251C] text-white hover:bg-[#433629]'
                 : 'bg-[#EFE9DC] hover:bg-[#E5DDC9] text-[#2A231C] border border-[#DDD2BC]'
             }`}
           >
@@ -177,7 +177,9 @@ export const AmbientAudioPlayer: React.FC<AmbientAudioPlayerProps> = ({
                 }`}
               >
                 <div className="flex items-center justify-between w-full mb-1">
-                  <span className="text-xl">{preset.icon}</span>
+                  <span className="text-xl">
+                    <img src={preset.icon} className='w-6 h-6' />
+                  </span>
                   {isSelected && (
                     <span className="w-4 h-4 rounded-full bg-[#8C724B] text-white flex items-center justify-center text-[10px]">
                       <Check className="w-2.5 h-2.5" />
@@ -200,7 +202,9 @@ export const AmbientAudioPlayer: React.FC<AmbientAudioPlayerProps> = ({
         {/* Current Track Description Banner */}
         <div className="p-2.5 rounded-xl bg-[#F4EFE5] border border-[#E4DCB] text-[11px] text-[#695B4C] flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="text-base">{activePreset.icon}</span>
+            <span className="text-base">
+                <img src={activePreset.icon} className='w-6 h-6' />
+            </span>
             <span>
               <strong>{activePreset.name}:</strong> {activePreset.description}
             </span>
