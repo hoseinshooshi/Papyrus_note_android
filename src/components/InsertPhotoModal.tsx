@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Image as ImageIcon, Upload, Link as LinkIcon, Sparkles, X, Check, Image } from 'lucide-react';
+import { Image as ImageIcon, Upload, Link as LinkIcon,  X, Check, Image } from 'lucide-react';
 
 interface InsertPhotoModalProps {
   isOpen: boolean;
@@ -9,34 +9,44 @@ interface InsertPhotoModalProps {
 
 const PRESET_PHOTOS = [
   {
-    title: 'Parchment & Quill',
-    url: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1000&q=80',
-    caption: 'Ancient parchment and reflections',
+    title: 'Bridge',
+    url: '/Preset/bridge.jpg',
+    caption: '',
   },
   {
-    title: 'Cozy Morning Coffee',
-    url: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1000&q=80',
-    caption: 'Quiet morning coffee & thoughts',
+    title: 'field',
+    url: '/Preset/field.jpg',
+    caption: '',
   },
   {
-    title: 'Botanical Garden',
-    url: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1000&q=80',
-    caption: 'Serene forest walking path',
+    title: 'Forest',
+    url: '/Preset/forest.jpg',
+    caption: '',
   },
   {
-    title: 'Vintage Library Books',
-    url: 'https://images.unsplash.com/photo-1507842229456-407421590e8c?auto=format&fit=crop&w=1000&q=80',
-    caption: 'Shelves of timeless knowledge',
+    title: 'Forest 2',
+    url: '/Preset/forest_1.jpg',
+    caption: '',
   },
   {
-    title: 'Sunset Horizon',
-    url: 'https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?auto=format&fit=crop&w=1000&q=80',
-    caption: 'Golden evening horizon',
+    title: 'lake',
+    url: '/Preset/lake.jpg',
+    caption: '',
   },
   {
-    title: 'Tea & Journaling',
-    url: 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1000&q=80',
-    caption: 'Journal and herbal tea',
+    title: 'river',
+    url: '/Preset/river.jpg',
+    caption: '',
+  },
+  {
+    title: 'street',
+    url: '/Preset/street.jpg',
+    caption: '',
+  },
+  {
+    title: 'village',
+    url: '/Preset/village.jpg',
+    caption: '',
   }
 ];
 
