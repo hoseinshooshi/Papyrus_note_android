@@ -38,7 +38,8 @@
     "react-native-safe-area-context": "~5.10.1",
     "react-native-screens": "*",
     "react-native-svg": "*",
-    "punycode": "^2.3.1"
+    "punycode": "^2.3.1",
+    "expo-speech-recognition": "~58.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

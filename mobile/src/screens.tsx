@@ -611,7 +611,7 @@ export function FocusScreen({
           <Button title="Apply durations" compact onPress={applyCustom} />
         </View> : null}
       </Card>
-      <AmbientAudioPlayer isFocusTimerRunning={running} />
+      <AmbientAudioPlayer isFocusTimerRunning={running && mode === "work"} />
       <Card style={{ gap: 9 }}>
         <AppText style={{ fontSize: 10, fontFamily: "PlusJakartaSans_700Bold" }}>DEDICATE THIS SESSION TO</AppText>
         <View style={{ borderWidth: 1, borderColor: C.line, borderRadius: 10, backgroundColor: "#F5F0E6" }}>

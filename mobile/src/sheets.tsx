@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
+import { ExpoSpeechRecognitionModule, useSpeechRecognitionEvent } from "expo-speech-recognition";
 import {
   AudioModule,
   RecordingPresets,
@@ -537,8 +538,75 @@ export function JournalEditorSheet({
   const [showInlinePhoto, setShowInlinePhoto] = useState(false);
   const [audioRecording, setAudioRecording] = useState<JournalEntry["audioRecording"]>();
   const [voiceTranscript, setVoiceTranscript] = useState("");
+  const [dictationLanguage, setDictationLanguage] = useState<"en-US" | "fa-IR">("en-US");
+  const [dictationActive, setDictationActive] = useState(false);
+  const [dictationPartial, setDictationPartial] = useState("");
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
   const [uploading, setUploading] = useState(false);
+  useSpeechRecognitionEvent("start", () => {
+    setDictationActive(true);
+    setDictationPartial("");
+  });
+  useSpeechRecognitionEvent("end", () => {
+    setDictationActive(false);
+    setDictationPartial("");
+  });
+  useSpeechRecognitionEvent("result", (event) => {
+    const transcript = event.results?.[0]?.transcript?.trim() || "";
+    if (!transcript) return;
+    if (event.isFinal) {
+      setVoiceTranscript((current) => [current.trim(), transcript].filter(Boolean).join(" "));
+      setDictationPartial("");
+    } else {
+      setDictationPartial(transcript);
+    }
+  });
+  useSpeechRecognitionEvent("error", (event) => {
+    setDictationActive(false);
+    setDictationPartial("");
+    Alert.alert("Speech recognition unavailable", event.message || event.error || "Check the Android speech service and microphone permissions.");
+  });
+
+  useEffect(() => {
+    if (!visible && dictationActive) ExpoSpeechRecognitionModule.abort();
+  }, [visible, dictationActive]);
+
+  useEffect(() => {
+    return () => {
+      ExpoSpeechRecognitionModule.abort();
+    };
+  }, []);
+
+  const toggleDictation = async () => {
+    if (dictationActive) {
+      ExpoSpeechRecognitionModule.stop();
+      return;
+    }
+    if (recorderState.isRecording) {
+      Alert.alert("Finish audio recording first", "Stop the voice recording before starting live dictation.");
+      return;
+    }
+    if (!ExpoSpeechRecognitionModule.isRecognitionAvailable()) {
+      Alert.alert("Speech service unavailable", "Install or enable an Android speech recognition service (for example, Google Speech Services) and try again.");
+      return;
+    }
+    try {
+      const permission = await ExpoSpeechRecognitionModule.requestPermissionsAsync();
+      if (!permission.granted) {
+        Alert.alert("Permission required", "Allow microphone and speech recognition permissions to dictate journal text.");
+        return;
+      }
+      ExpoSpeechRecognitionModule.start({
+        lang: dictationLanguage,
+        interimResults: true,
+        continuous: false,
+        maxAlternatives: 1,
+      });
+    } catch (error) {
+      Alert.alert("Could not start dictation", error instanceof Error ? error.message : "Please try again.");
+    }
+  };
+
   const recorder = useAudioRecorder({ ...RecordingPresets.HIGH_QUALITY, directory: "document" });
   const recorderState = useAudioRecorderState(recorder);
   const player = useAudioPlayer(audioRecording?.audioDataUrl || null);
@@ -651,7 +719,22 @@ export function JournalEditorSheet({
           <InlinePhotoComposer visible={showInlinePhoto} uid={uid} prefix="journal" onInsert={(markdown) => setContent((current) => current + markdown)} />
           <Field label="Reflection" value={content} onChangeText={setContent} placeholder="What happened today? What did you notice, learn, or appreciate?" multiline numberOfLines={9} />
         </View>
-        <Field label="Voice transcript" value={voiceTranscript} onChangeText={setVoiceTranscript} placeholder="Optional transcript or dictated thoughts…" multiline numberOfLines={3} />
+        <Card style={{ gap: 9 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <View style={{ flex: 1 }}>
+              <AppText style={{ fontSize: 10, fontFamily: "PlusJakartaSans_700Bold" }}>LIVE SPEECH-TO-TEXT</AppText>
+              <AppText muted style={{ fontSize: 9, marginTop: 3 }}>{dictationActive ? "Listening… speak naturally, then stop." : "Dictate a reflection directly into the journal."}</AppText>
+            </View>
+            <Button title={dictationActive ? "Stop dictation" : "Start dictation"} compact variant={dictationActive ? "danger" : "dark"} onPress={toggleDictation} disabled={recorderState.isRecording || uploading} />
+          </View>
+          <View style={{ flexDirection: "row", gap: 7 }}>
+            <Pill label="English" selected={dictationLanguage === "en-US"} onPress={() => setDictationLanguage("en-US")} />
+            <Pill label="فارسی" selected={dictationLanguage === "fa-IR"} onPress={() => setDictationLanguage("fa-IR")} />
+          </View>
+          {dictationPartial ? <AppText style={{ fontSize: 11, color: C.blue }}>…{dictationPartial}</AppText> : null}
+          {dictationActive ? <AppText muted style={{ fontSize: 9 }}>Interim words appear here and are added when the speech service returns a final result.</AppText> : null}
+        </Card>
+        <Field label="Voice transcript" value={voiceTranscript} onChangeText={setVoiceTranscript} placeholder="Type or dictate journal thoughts…" multiline numberOfLines={4} />
         <Field label="Tags (comma separated)" value={tags} onChangeText={setTags} placeholder="gratitude, work, family" />
         <Card style={{ gap: 9 }}>
           <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -659,7 +742,7 @@ export function JournalEditorSheet({
               <AppText style={{ fontSize: 11, fontFamily: "PlusJakartaSans_700Bold" }}>VOICE RECORDING</AppText>
               <AppText muted style={{ fontSize: 10, marginTop: 3 }}>{recorderState.isRecording ? "Recording in progress…" : audioRecording ? `${audioRecording.durationSeconds}s recorded` : "Add an audio memory to this entry"}</AppText>
             </View>
-            <Button compact title={recorderState.isRecording ? "Stop" : audioRecording ? "Record again" : "Record"} variant={recorderState.isRecording ? "danger" : "dark"} onPress={toggleRecording} />
+            <Button compact title={recorderState.isRecording ? "Stop" : audioRecording ? "Record again" : "Record"} variant={recorderState.isRecording ? "danger" : "dark"} onPress={toggleRecording} disabled={dictationActive || uploading} />
           </View>
           {audioRecording?.audioDataUrl && !recorderState.isRecording ? <Button title="Play recording" compact variant="light" onPress={() => player.play()} /> : null}
           {uploading ? <AppText muted style={{ fontSize: 10 }}>Uploading attachment…</AppText> : null}

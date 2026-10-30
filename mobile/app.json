@@ -39,6 +39,16 @@
           "defaultChannel": "papyrus-focus-sound",
           "color": "#8C724B"
         }
+      ],
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Papyrus uses your microphone to record and transcribe journal entries.",
+          "speechRecognitionPermission": "Papyrus uses speech recognition to turn your spoken journal thoughts into text.",
+          "androidSpeechServicePackages": [
+            "com.google.android.googlequicksearchbox"
+          ]
+        }
       ]
     ],
     "experiments": {
