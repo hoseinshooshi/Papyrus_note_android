@@ -22,7 +22,8 @@
         {
           "microphonePermission": "Papyrus uses your microphone to record journal voice notes.",
           "recordAudioAndroid": true,
-          "enableBackgroundRecording": false
+          "enableBackgroundRecording": false,
+          "enableBackgroundPlayback": true
         }
       ],
       [

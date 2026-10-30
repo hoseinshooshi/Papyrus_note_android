@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Markdown from "react-native-markdown-display";
 import * as Haptics from "expo-haptics";
 import * as Notifications from "expo-notifications";
+import { useAudioPlayer } from "expo-audio";
 import * as Clipboard from "expo-clipboard";
 import { Note, Task, JournalEntry, JournalMood, CharacterProfile, NoteColor, TaskPriority, NOTE_COLORS, JOURNAL_MOODS } from "../../src/types";
 import { INITIAL_CATEGORIES, CRYPTO_ADDRESS } from "../../src/data/initialData";
@@ -20,6 +21,7 @@ import { NOTE_TEMPLATES } from "../../src/data/templates";
 import { PIXEL_AVATARS, AVATAR_CATEGORIES, getAvatarById } from "../../src/data/pixelAvatars";
 import { C, AppText, Button, Card, Field, Heading, Pill, Stat } from "./ui";
 import { PixelAvatarNative } from "./pixelArt";
+import { AmbientAudioPlayer } from "./ambientAudio";
 
 const moods: { id: JournalMood; label: string; emoji: string }[] = [
   { id: "radiant", label: "Radiant", emoji: "☀️" },
@@ -471,6 +473,7 @@ export function FocusScreen({
   const [custom, setCustom] = useState("25");
   const [selectedTask, setSelectedTask] = useState("");
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const chimePlayer = useAudioPlayer(require("../assets/sounds/chime.wav"));
   const endAt = useRef<number | null>(null);
   const scheduledNotification = useRef<string | null>(null);
   const length = mode === "work" ? workMinutes : mode === "shortBreak" ? shortMinutes : longMinutes;
@@ -513,6 +516,7 @@ export function FocusScreen({
         scheduledNotification.current = null;
         setRunning(false);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => undefined);
+        void chimePlayer.seekTo(0).then(() => chimePlayer.play()).catch(() => undefined);
         if (mode === "work") {
           onComplete(lengthRef.current);
           setMode("shortBreak");
@@ -524,7 +528,7 @@ export function FocusScreen({
       }
     }, 250);
     return () => clearInterval(timer);
-  }, [running, mode, shortMinutes, workMinutes, onComplete]);
+  }, [running, mode, shortMinutes, workMinutes, onComplete, chimePlayer]);
 
   const switchMode = (next: "work" | "shortBreak" | "longBreak") => {
     void cancelEndNotification();
@@ -607,6 +611,7 @@ export function FocusScreen({
           <Button title="Apply durations" compact onPress={applyCustom} />
         </View> : null}
       </Card>
+      <AmbientAudioPlayer isFocusTimerRunning={running} />
       <Card style={{ gap: 9 }}>
         <AppText style={{ fontSize: 10, fontFamily: "PlusJakartaSans_700Bold" }}>DEDICATE THIS SESSION TO</AppText>
         <View style={{ borderWidth: 1, borderColor: C.line, borderRadius: 10, backgroundColor: "#F5F0E6" }}>
