@@ -394,7 +394,6 @@ function AppRoot() {
   ];
 
   return (
-    <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: C.bg }} edges={["top", "left", "right"]}>
         <StatusBar style="dark" backgroundColor={C.bg} />
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 17, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: C.line, backgroundColor: C.bg }}>

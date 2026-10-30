@@ -32,15 +32,15 @@
     "expo-web-browser": "*",
     "firebase": "^12.19.0",
     "react": "19.3.0",
-    "react-native": "0.88.0",
+    "react-native": "0.88.1",
     "react-native-markdown-display": "^7.0.2",
-    "react-native-safe-area-context": "*",
+    "react-native-safe-area-context": "~5.10.1",
     "react-native-screens": "*",
     "react-native-svg": "*"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
     "@types/react": "~19.3.0",
-    "typescript": "~5.9.3"
+    "typescript": "~6.0.3"
   }
 }
