@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import NetInfo from "@react-native-community/netinfo";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
@@ -32,7 +33,7 @@ import { INITIAL_NOTES, INITIAL_TASKS, INITIAL_JOURNALS, INITIAL_CATEGORIES, CRY
 import { DEFAULT_CHARACTER } from "../src/data/pixelAvatars";
 import { NOTE_TEMPLATES } from "../src/data/templates";
 import firebaseConfig from "../firebase-applet-config.json";
-import { auth, db, watchAuth, watchCollection, watchCharacter, saveItem, removeItem, saveCharacter, syncUserAccount } from "./src/firebase";
+import { auth, db, watchAuth, watchCollection, watchCharacter, saveItem, removeItem, saveCharacter, syncUserAccount, flushPendingWrites } from "./src/firebase";
 import { C, AppText, Button, Card, Heading, Loading } from "./src/ui";
 import { NoteEditorSheet, TaskEditorSheet, JournalEditorSheet, QuickCaptureSheet } from "./src/sheets";
 import { DashboardScreen, NotesScreen, JournalScreen, TasksScreen, FocusScreen, ProfileScreen, DonationSheet } from "./src/screens";
@@ -153,6 +154,21 @@ function AppRoot() {
 
   useEffect(() => {
     if (!user?.uid) return;
+    const uid = user.uid;
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      if (state.isConnected) {
+        flushPendingWrites(uid)
+          .then(() => setCloudSynced(true))
+          .catch(() => setCloudSynced(false));
+      } else if (state.isConnected === false) {
+        setCloudSynced(false);
+      }
+    });
+    return unsubscribe;
+  }, [user?.uid]);
+
+  useEffect(() => {
+    if (!user?.uid) return;
     let active = true;
     let unsubs: (() => void)[] = [];
     const uid = user.uid;
@@ -171,6 +187,15 @@ function AppRoot() {
       if (cache.journals?.length) setJournals(sortJournals(cache.journals));
       if (cache.tasks?.length) setTasks(sortTasks(cache.tasks));
       if (cache.character) setCharacter({ ...DEFAULT_CHARACTER, ...cache.character });
+      const network = await NetInfo.fetch();
+      if (active && network.isConnected) {
+        try {
+          await flushPendingWrites(uid);
+        } catch {
+          setCloudSynced(false);
+        }
+      }
+      if (!active) return;
       setCacheReadyUid(uid);
 
       const seeded = { notes: false, journals: false, tasks: false };
@@ -315,7 +340,23 @@ function AppRoot() {
   }, [user?.uid]);
 
   const shareNote = (note: Note) => {
-    Share.share({ title: note.title, message: `# ${note.title}\n\n${note.content}\n\nTags: ${note.tags.join(", ")}` }).catch(() => undefined);
+    Alert.alert("Export note", note.title, [
+      {
+        text: "Markdown",
+        onPress: () => Share.share({
+          title: note.title,
+          message: `# ${note.title}\n\n${note.content}\n\nTags: ${note.tags.join(", ")}`,
+        }).catch(() => undefined),
+      },
+      {
+        text: "JSON",
+        onPress: () => Share.share({
+          title: `${note.title}.json`,
+          message: JSON.stringify(note, null, 2),
+        }).catch(() => undefined),
+      },
+      { text: "Cancel", style: "cancel" },
+    ]);
   };
   const duplicateNote = (note: Note) => saveNote({ ...note, id: makeId("note"), title: `${note.title} (Copy)`, createdAt: Date.now(), updatedAt: Date.now() });
   const togglePin = (note: Note) => saveNote({ ...note, isPinned: !note.isPinned, updatedAt: Date.now() });

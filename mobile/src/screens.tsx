@@ -53,6 +53,9 @@ const idEmoji = (id: string) => {
   if (id.includes("alien")) return "👽";
   if (id.includes("wanderer")) return "🌙";
   if (id.includes("sakura")) return "🌸";
+  if (id.includes("ramen")) return "🍜";
+  if (id.includes("cyberpunk") || id.includes("rain")) return "🌃";
+  if (id.includes("cliff")) return "🏞️";
   return "🧑‍🎨";
 };
 

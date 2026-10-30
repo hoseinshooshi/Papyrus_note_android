@@ -5,7 +5,7 @@ This is a native React Native client built with Expo SDK 58 (React Native 0.88).
 ## Included mobile workflows
 
 - Firebase Google authentication and per-user Firestore real-time sync.
-- Local offline cache with AsyncStorage, with the same Firestore paths as the web app: `users/{uid}/notes`, `journals`, `tasks` and `profile/character`.
+- Local offline cache and a durable AsyncStorage write/delete outbox that retries automatically when connectivity returns, with the same Firestore paths as the web app: `users/{uid}/notes`, `journals`, `tasks` and `profile/character`.
 - Dashboard, notes, journal, tasks, Pomodoro focus timer and character/profile sections.
 - Note templates, markdown preview, search, categories, tags, color themes, pin/archive/duplicate/delete, and Markdown/JSON sharing.
 - Journal mood tracking, month calendar, search, checklist, photo attachment and voice recordings.
