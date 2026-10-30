@@ -1,0 +1,45 @@
+{
+  "name": "papyrus-notes-android",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "prebuild:android": "expo prebuild --platform android",
+    "typecheck": "tsc --noEmit",
+    "doctor": "npx expo-doctor"
+  },
+  "dependencies": {
+    "@expo-google-fonts/cinzel": "*",
+    "@expo-google-fonts/newsreader": "*",
+    "@expo-google-fonts/plus-jakarta-sans": "*",
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-picker/picker": "*",
+    "@expo/vector-icons": "*",
+    "expo": "~58.0.21",
+    "expo-dev-client": "*",
+    "expo-audio": "~58.0.9",
+    "expo-auth-session": "*",
+    "expo-clipboard": "*",
+    "expo-crypto": "*",
+    "expo-font": "*",
+    "expo-haptics": "*",
+    "expo-image-picker": "*",
+    "expo-notifications": "~58.1.6",
+    "expo-status-bar": "*",
+    "expo-web-browser": "*",
+    "firebase": "^12.19.0",
+    "react": "19.3.0",
+    "react-native": "0.88.0",
+    "react-native-markdown-display": "^7.0.2",
+    "react-native-safe-area-context": "*",
+    "react-native-screens": "*",
+    "react-native-svg": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/react": "~19.3.0",
+    "typescript": "~5.9.3"
+  }
+}

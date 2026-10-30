@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "Papyrus Notes",
+    "slug": "papyrus-notes",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "papyrusnotes",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "android": {
+      "package": "com.hoseinshooshi.papyrusnotes",
+      "versionCode": 1,
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "RECORD_AUDIO",
+        "READ_MEDIA_IMAGES",
+        "POST_NOTIFICATIONS",
+        "VIBRATE"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Papyrus uses your microphone to record journal voice notes.",
+          "recordAudioAndroid": true,
+          "enableBackgroundRecording": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Papyrus uses your photos when you attach an image to a note or journal.",
+          "cameraPermission": "Papyrus uses your camera when you take a note or journal photo."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "defaultChannel": "papyrus-focus",
+          "color": "#8C724B"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}

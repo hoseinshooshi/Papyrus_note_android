@@ -1,0 +1,38 @@
+name: React Native Android checks
+
+on:
+  push:
+    branches: [react-native-android]
+    paths:
+      - "mobile/**"
+      - "src/types.ts"
+      - "src/data/**"
+      - "firebase-applet-config.json"
+      - ".github/workflows/mobile-checks.yml"
+  pull_request:
+    paths:
+      - "mobile/**"
+      - "src/types.ts"
+      - "src/data/**"
+      - "firebase-applet-config.json"
+      - ".github/workflows/mobile-checks.yml"
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install
+      - name: Align Expo package versions
+        run: npx expo install --fix
+      - name: TypeScript check
+        run: npm run typecheck
+      - name: Expo dependency check
+        run: npx expo-doctor
