@@ -20,7 +20,7 @@ import {
   useAudioRecorder,
   useAudioRecorderState,
 } from "expo-audio";
-import { ChecklistItem, JournalEntry, JournalMood, Note, NoteColor, Task, TaskPriority } from "../../src/types";
+import { ChecklistItem, ImageAspectRatio, JournalEntry, JournalMood, Note, NoteColor, Task, TaskPriority } from "../../src/types";
 import { JOURNAL_MOODS, NOTE_COLORS } from "../../src/types";
 import { C, AppText, Button, Card, Field, Pill } from "./ui";
 import { uploadMedia } from "./firebase";
@@ -73,19 +73,188 @@ function SheetFrame({
   );
 }
 
-function ImageAttachment({ uri, onPick, onRemove }: { uri?: string; onPick: () => void; onRemove: () => void }) {
+const ASPECT_CHOICES: { id: ImageAspectRatio; description: string }[] = [
+  { id: "16:9", description: "Widescreen" },
+  { id: "4:3", description: "Classic" },
+  { id: "1:1", description: "Square" },
+  { id: "3:4", description: "Portrait" },
+  { id: "21:9", description: "Panorama" },
+];
+const COVER_PRESETS = [
+  { title: "Autumn Rain & Tea", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80", category: "Nature" },
+  { title: "Vintage Writing Desk", url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80", category: "Work" },
+  { title: "Quiet Pine Forest", url: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80", category: "Forest" },
+  { title: "Antique Books & Candle", url: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80", category: "Books" },
+  { title: "Morning Fog in Valley", url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80", category: "Mountains" },
+  { title: "Cozy Coffee & Notebook", url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80", category: "Cafe" },
+];
+const aspectValue = (ratio: ImageAspectRatio) => {
+  const [width, height] = ratio.split(":").map(Number);
+  return width / height;
+};
+
+function ImageAttachment({
+  uri,
+  aspectRatio,
+  onPick,
+  onRemove,
+  onRatioChange,
+  onUseUrl,
+}: {
+  uri?: string;
+  aspectRatio: ImageAspectRatio;
+  onPick: () => void;
+  onRemove: () => void;
+  onRatioChange: (ratio: ImageAspectRatio) => void;
+  onUseUrl: (url: string) => void;
+}) {
+  const [optionsOpen, setOptionsOpen] = useState(false);
+  const [url, setUrl] = useState("");
+  return (
+    <Card style={{ gap: 10 }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <View style={{ flex: 1 }}>
+          <AppText style={{ fontSize: 11, fontFamily: "PlusJakartaSans_700Bold" }}>COVER / THUMBNAIL PHOTO</AppText>
+          <AppText muted style={{ fontSize: 9, marginTop: 3 }}>Choose a cover, use a web image or upload from the device</AppText>
+        </View>
+        <Button title={optionsOpen ? "Done" : uri ? "Change" : "Add cover"} compact variant="light" onPress={() => setOptionsOpen(!optionsOpen)} />
+      </View>
+      {uri ? (
+        <View style={{ gap: 9 }}>
+          <Image source={{ uri }} resizeMode="cover" style={{ width: "100%", aspectRatio: aspectValue(aspectRatio), borderRadius: 12, backgroundColor: C.paper2 }} />
+          <View style={{ gap: 7 }}>
+            <AppText muted style={{ fontSize: 9 }}>ASPECT RATIO</AppText>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+              {ASPECT_CHOICES.map((item) => (
+                <Pill key={item.id} label={item.id} selected={aspectRatio === item.id} onPress={() => onRatioChange(item.id)} />
+              ))}
+            </View>
+          </View>
+          <Button title="Remove cover photo" compact variant="outline" onPress={onRemove} style={{ alignSelf: "flex-start" }} />
+        </View>
+      ) : <AppText muted style={{ fontSize: 11 }}>No cover photo selected yet.</AppText>}
+      {optionsOpen ? (
+        <View style={{ gap: 10, borderTopWidth: 1, borderTopColor: C.line, paddingTop: 11 }}>
+          <AppText style={{ fontSize: 10, fontFamily: "PlusJakartaSans_700Bold" }}>PREFERRED ASPECT RATIO</AppText>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+            {ASPECT_CHOICES.map((item) => <Pill key={item.id} label={item.id} selected={aspectRatio === item.id} onPress={() => onRatioChange(item.id)} />)}
+          </View>
+          <Button title="Choose from photo library" compact onPress={onPick} />
+          <View style={{ gap: 7 }}>
+            <Field label="Image web URL" value={url} onChangeText={setUrl} placeholder="https://example.com/photo.jpg" />
+            <Button title="Apply image URL" compact variant="light" disabled={!/^https?:\/\//i.test(url.trim())} onPress={() => { onUseUrl(url.trim()); setUrl(""); setOptionsOpen(false); }} />
+          </View>
+          <AppText style={{ fontSize: 10, fontFamily: "PlusJakartaSans_700Bold" }}>CURATED PRESETS</AppText>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+            {COVER_PRESETS.map((preset) => (
+              <Pressable key={preset.url} onPress={() => { onUseUrl(preset.url); setOptionsOpen(false); }} style={{ width: 135, borderRadius: 11, overflow: "hidden", borderWidth: 1, borderColor: C.line, backgroundColor: C.paper2 }}>
+                <Image source={{ uri: preset.url }} style={{ width: 135, height: 76 }} resizeMode="cover" />
+                <View style={{ padding: 7 }}>
+                  <AppText style={{ fontSize: 9, fontFamily: "PlusJakartaSans_700Bold" }} numberOfLines={1}>{preset.title}</AppText>
+                  <AppText muted style={{ fontSize: 8 }}>{preset.category}</AppText>
+                </View>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
+      ) : null}
+    </Card>
+  );
+}
+
+const INLINE_PHOTO_PRESETS = [
+  { title: "Bridge", url: "https://raw.githubusercontent.com/hoseinshooshi/Papyrus_note_android/main/public/Preset/bridge.jpg" },
+  { title: "Field", url: "https://raw.githubusercontent.com/hoseinshooshi/Papyrus_note_android/main/public/Preset/field.jpg" },
+  { title: "Forest", url: "https://raw.githubusercontent.com/hoseinshooshi/Papyrus_note_android/main/public/Preset/forest.jpg" },
+  { title: "Forest 2", url: "https://raw.githubusercontent.com/hoseinshooshi/Papyrus_note_android/main/public/Preset/forest_1.jpg" },
+  { title: "Lake", url: "https://raw.githubusercontent.com/hoseinshooshi/Papyrus_note_android/main/public/Preset/lake.jpg" },
+  { title: "River", url: "https://raw.githubusercontent.com/hoseinshooshi/Papyrus_note_android/main/public/Preset/river.jpg" },
+  { title: "Street", url: "https://raw.githubusercontent.com/hoseinshooshi/Papyrus_note_android/main/public/Preset/street.jpg" },
+  { title: "Village", url: "https://raw.githubusercontent.com/hoseinshooshi/Papyrus_note_android/main/public/Preset/village.jpg" },
+];
+
+function InlinePhotoComposer({
+  visible,
+  uid,
+  prefix,
+  onInsert,
+}: {
+  visible: boolean;
+  uid: string;
+  prefix: string;
+  onInsert: (markdown: string) => void;
+}) {
+  const [tab, setTab] = useState<"presets" | "url" | "upload">("presets");
+  const [url, setUrl] = useState("");
+  const [caption, setCaption] = useState("");
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  if (!visible) return null;
+
+  const pickUpload = async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) return Alert.alert("Photo access needed", "Allow photo access to attach an image.");
+    const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ["images"], quality: 0.85 });
+    if (result.canceled || !result.assets[0]) return;
+    const localUri = result.assets[0].uri;
+    setUploading(true);
+    try {
+      const remote = await uploadMedia(uid, localUri, `${prefix}-inline-${Date.now()}.jpg`, result.assets[0].mimeType || "image/jpeg");
+      setPreviewUrl(remote);
+    } catch {
+      setPreviewUrl(localUri);
+      Alert.alert("Saved on this device", "Cloud upload failed; the local image URI will only work on this device.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const submit = () => {
+    const finalUrl = previewUrl || (tab === "url" ? url.trim() : "");
+    if (!finalUrl) return Alert.alert("Choose an image", "Select a preset, upload a photo or enter a valid image URL.");
+    if (!finalUrl.startsWith("https://") && !finalUrl.startsWith("http://") && !finalUrl.startsWith("file://")) {
+      return Alert.alert("Invalid image URL", "Use an http(s) image URL or upload a photo from this device.");
+    }
+    onInsert(`\n\n![${caption.trim()}](${finalUrl})\n\n`);
+    setPreviewUrl("");
+    setUrl("");
+    setCaption("");
+    setTab("presets");
+  };
+
   return (
     <Card style={{ gap: 9 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-        <AppText style={{ fontSize: 11, fontFamily: "PlusJakartaSans_700Bold" }}>PHOTO ATTACHMENT</AppText>
-        <Button title={uri ? "Change photo" : "Add photo"} compact variant="light" onPress={onPick} />
-      </View>
-      {uri ? (
-        <View>
-          <Image source={{ uri }} resizeMode="cover" style={{ width: "100%", height: 170, borderRadius: 12 }} />
-          <Button title="Remove photo" compact variant="outline" onPress={onRemove} style={{ marginTop: 8, alignSelf: "flex-start" }} />
+        <AppText style={{ fontSize: 10, fontFamily: "PlusJakartaSans_700Bold" }}>INSERT PHOTO IN TEXT</AppText>
+        <View style={{ flexDirection: "row", gap: 6 }}>
+          <Pill label="Presets" selected={tab === "presets"} onPress={() => setTab("presets")} />
+          <Pill label="Web URL" selected={tab === "url"} onPress={() => setTab("url")} />
+          <Pill label="Upload" selected={tab === "upload"} onPress={() => setTab("upload")} />
         </View>
-      ) : <AppText muted style={{ fontSize: 11 }}>Attach a visual memory to this entry.</AppText>}
+      </View>
+      {tab === "presets" ? (
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 7 }}>
+          {INLINE_PHOTO_PRESETS.map((item) => (
+            <Pressable key={item.url} onPress={() => { setPreviewUrl(item.url); setCaption(item.title); }} style={{ width: "23%", gap: 3 }}>
+              <Image source={{ uri: item.url }} style={{ width: "100%", height: 55, borderRadius: 7, borderWidth: previewUrl === item.url ? 2 : 1, borderColor: previewUrl === item.url ? C.gold : C.line }} resizeMode="cover" />
+              <AppText muted style={{ fontSize: 8 }} numberOfLines={1}>{item.title}</AppText>
+            </Pressable>
+          ))}
+        </View>
+      ) : null}
+      {tab === "url" ? <Field label="Image web URL" value={url} onChangeText={(value) => { setUrl(value); setPreviewUrl(""); }} placeholder="https://example.com/image.jpg" /> : null}
+      {tab === "upload" ? (
+        <View style={{ gap: 8 }}>
+          <Button title={uploading ? "Uploading…" : "Choose image from device"} compact disabled={uploading} onPress={pickUpload} />
+          {previewUrl ? <Image source={{ uri: previewUrl }} style={{ width: "100%", height: 130, borderRadius: 10 }} resizeMode="cover" /> : null}
+        </View>
+      ) : null}
+      {tab !== "upload" && previewUrl ? <Image source={{ uri: previewUrl }} style={{ width: "100%", height: 130, borderRadius: 10 }} resizeMode="cover" /> : null}
+      <Field label="Photo caption (optional)" value={caption} onChangeText={setCaption} placeholder="A note about this picture…" />
+      <View style={{ flexDirection: "row", gap: 8 }}>
+        <Button title="Insert Markdown image" compact disabled={uploading || (tab === "url" && !url.trim()) || (tab === "presets" && !previewUrl)} onPress={submit} />
+      </View>
     </Card>
   );
 }
@@ -140,6 +309,8 @@ export function NoteEditorSheet({
   const [pinned, setPinned] = useState(false);
   const [archived, setArchived] = useState(false);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | undefined>();
+  const [thumbnailAspectRatio, setThumbnailAspectRatio] = useState<ImageAspectRatio>("16:9");
+  const [showInlinePhoto, setShowInlinePhoto] = useState(false);
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
   const [preview, setPreview] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -154,6 +325,8 @@ export function NoteEditorSheet({
     setPinned(!!note?.isPinned);
     setArchived(!!note?.isArchived);
     setThumbnailUrl(note?.thumbnailUrl);
+    setThumbnailAspectRatio(note?.thumbnailAspectRatio || "16:9");
+    setShowInlinePhoto(false);
     setChecklist(note?.checklist || []);
     setPreview(false);
   }, [note, visible]);
@@ -196,7 +369,7 @@ export function NoteEditorSheet({
       isArchived: archived,
       checklist,
       thumbnailUrl,
-      thumbnailAspectRatio: note?.thumbnailAspectRatio,
+      thumbnailAspectRatio,
       createdAt: note?.createdAt || now,
       updatedAt: now,
     });
@@ -223,8 +396,12 @@ export function NoteEditorSheet({
         <View style={{ gap: 8 }}>
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
             <AppText style={{ fontSize: 10, fontFamily: "PlusJakartaSans_700Bold" }}>NOTE CONTENT · MARKDOWN</AppText>
-            <Pill label={preview ? "Edit" : "Preview"} selected onPress={() => setPreview(!preview)} />
+            <View style={{ flexDirection: "row", gap: 6 }}>
+              <Pill label="Insert photo" onPress={() => setShowInlinePhoto(!showInlinePhoto)} selected={showInlinePhoto} />
+              <Pill label={preview ? "Edit" : "Preview"} selected onPress={() => setPreview(!preview)} />
+            </View>
           </View>
+          <InlinePhotoComposer visible={showInlinePhoto} uid={uid} prefix="note" onInsert={(markdown) => setContent((current) => current + markdown)} />
           {preview ? (
             <View style={{ minHeight: 175, borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: "#F5F0E6", padding: 12 }}>
               {content.trim() ? <Markdown style={{ body: { color: C.ink, fontSize: 12, lineHeight: 20 }, heading1: { color: C.ink, fontFamily: "Newsreader_600SemiBold" }, heading2: { color: C.ink, fontFamily: "Newsreader_600SemiBold" }, link: { color: C.blue } }}>{content}</Markdown> : <AppText muted>Nothing to preview yet.</AppText>}
@@ -242,7 +419,14 @@ export function NoteEditorSheet({
           <Pill label={archived ? "In archive" : "Move to archive"} selected={archived} onPress={() => setArchived(!archived)} />
         </View>
         <ChecklistEditor items={checklist} onChange={setChecklist} />
-        <ImageAttachment uri={thumbnailUrl} onPick={pickPhoto} onRemove={() => setThumbnailUrl(undefined)} />
+        <ImageAttachment
+          uri={thumbnailUrl}
+          aspectRatio={thumbnailAspectRatio}
+          onPick={pickPhoto}
+          onRemove={() => setThumbnailUrl(undefined)}
+          onRatioChange={setThumbnailAspectRatio}
+          onUseUrl={setThumbnailUrl}
+        />
         {uploading ? <AppText muted style={{ fontSize: 10 }}>Uploading photo to your private vault…</AppText> : null}
         <Button title={note ? "Save changes" : "Create note"} onPress={save} disabled={uploading || !title.trim()} />
         {note ? <Button title="Delete note" variant="danger" onPress={() => Alert.alert("Delete note?", "This cannot be undone.", [{ text: "Cancel", style: "cancel" }, { text: "Delete", style: "destructive", onPress: () => { onDelete(note.id); onClose(); } }])} /> : null}
@@ -349,6 +533,8 @@ export function JournalEditorSheet({
   const [mood, setMood] = useState<JournalMood>("peaceful");
   const [tags, setTags] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState<string | undefined>();
+  const [thumbnailAspectRatio, setThumbnailAspectRatio] = useState<ImageAspectRatio>("16:9");
+  const [showInlinePhoto, setShowInlinePhoto] = useState(false);
   const [audioRecording, setAudioRecording] = useState<JournalEntry["audioRecording"]>();
   const [voiceTranscript, setVoiceTranscript] = useState("");
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
@@ -365,6 +551,8 @@ export function JournalEditorSheet({
     setMood(entry?.mood || "peaceful");
     setTags((entry?.tags || []).join(", "));
     setThumbnailUrl(entry?.thumbnailUrl);
+    setThumbnailAspectRatio(entry?.thumbnailAspectRatio || "16:9");
+    setShowInlinePhoto(false);
     setAudioRecording(entry?.audioRecording);
     setVoiceTranscript(entry?.voiceTranscript || "");
     setChecklist(entry?.checklist || []);
@@ -429,7 +617,7 @@ export function JournalEditorSheet({
       tags: tags.split(",").map((tag) => tag.trim()).filter(Boolean),
       color: entry?.color || "parchment",
       thumbnailUrl,
-      thumbnailAspectRatio: entry?.thumbnailAspectRatio,
+      thumbnailAspectRatio,
       audioRecording,
       voiceTranscript,
       checklist,
@@ -455,7 +643,14 @@ export function JournalEditorSheet({
           </View>
           <AppText muted style={{ fontSize: 10 }}>{JOURNAL_MOODS[mood].tagline}</AppText>
         </Card>
-        <Field label="Reflection" value={content} onChangeText={setContent} placeholder="What happened today? What did you notice, learn, or appreciate?" multiline numberOfLines={9} />
+        <View style={{ gap: 8 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <AppText style={{ fontSize: 10, fontFamily: "PlusJakartaSans_700Bold" }}>REFLECTION · MARKDOWN</AppText>
+            <Pill label="Insert photo" selected={showInlinePhoto} onPress={() => setShowInlinePhoto(!showInlinePhoto)} />
+          </View>
+          <InlinePhotoComposer visible={showInlinePhoto} uid={uid} prefix="journal" onInsert={(markdown) => setContent((current) => current + markdown)} />
+          <Field label="Reflection" value={content} onChangeText={setContent} placeholder="What happened today? What did you notice, learn, or appreciate?" multiline numberOfLines={9} />
+        </View>
         <Field label="Voice transcript" value={voiceTranscript} onChangeText={setVoiceTranscript} placeholder="Optional transcript or dictated thoughts…" multiline numberOfLines={3} />
         <Field label="Tags (comma separated)" value={tags} onChangeText={setTags} placeholder="gratitude, work, family" />
         <Card style={{ gap: 9 }}>
@@ -470,7 +665,14 @@ export function JournalEditorSheet({
           {uploading ? <AppText muted style={{ fontSize: 10 }}>Uploading attachment…</AppText> : null}
         </Card>
         <ChecklistEditor items={checklist} onChange={setChecklist} />
-        <ImageAttachment uri={thumbnailUrl} onPick={pickPhoto} onRemove={() => setThumbnailUrl(undefined)} />
+        <ImageAttachment
+          uri={thumbnailUrl}
+          aspectRatio={thumbnailAspectRatio}
+          onPick={pickPhoto}
+          onRemove={() => setThumbnailUrl(undefined)}
+          onRatioChange={setThumbnailAspectRatio}
+          onUseUrl={setThumbnailUrl}
+        />
         <Button title={entry ? "Save journal entry" : "Save journal"} onPress={save} disabled={uploading || recorderState.isRecording || !title.trim()} />
         {entry ? <Button title="Delete journal entry" variant="danger" onPress={() => Alert.alert("Delete entry?", "This cannot be undone.", [{ text: "Cancel", style: "cancel" }, { text: "Delete", style: "destructive", onPress: () => { onDelete(entry.id); onClose(); } }])} /> : null}
       </ScrollView>

@@ -528,7 +528,7 @@ export function FocusScreen({
       }
     }, 250);
     return () => clearInterval(timer);
-  }, [running, mode, shortMinutes, workMinutes, onComplete, chimePlayer]);
+  }, [running, mode, shortMinutes, workMinutes, onComplete, chimePlayer, soundEnabled]);
 
   const switchMode = (next: "work" | "shortBreak" | "longBreak") => {
     void cancelEndNotification();
