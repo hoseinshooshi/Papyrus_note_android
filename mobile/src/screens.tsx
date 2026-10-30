@@ -19,6 +19,7 @@ import { INITIAL_CATEGORIES, CRYPTO_ADDRESS } from "../../src/data/initialData";
 import { NOTE_TEMPLATES } from "../../src/data/templates";
 import { PIXEL_AVATARS, AVATAR_CATEGORIES, getAvatarById } from "../../src/data/pixelAvatars";
 import { C, AppText, Button, Card, Field, Heading, Pill, Stat } from "./ui";
+import { PixelAvatarNative } from "./pixelArt";
 
 const moods: { id: JournalMood; label: string; emoji: string }[] = [
   { id: "radiant", label: "Radiant", emoji: "☀️" },
@@ -668,7 +669,7 @@ export function ProfileScreen({
     <View style={{ gap: 14 }}>
       <Heading subtitle="Shape your little corner of the Papyrus universe">Your character</Heading>
       <Card style={{ alignItems: "center", gap: 8, backgroundColor: selectedAvatar.bgHex, borderColor: selectedAvatar.borderHex }}>
-        <View style={{ width: 94, height: 94, borderRadius: 27, backgroundColor: "#FFFFFF99", borderWidth: 3, borderColor: selectedAvatar.borderHex, alignItems: "center", justifyContent: "center" }}><Text style={{ fontSize: 49 }}>{idEmoji(selectedAvatar.id)}</Text></View>
+        <PixelAvatarNative avatarId={avatarId} size={94} />
         <AppText serif style={{ fontSize: 24, fontFamily: "Newsreader_600SemiBold" }}>{name || "Scribe"}</AppText>
         <AppText muted style={{ fontSize: 10 }}>{selectedAvatar.name} · {selectedAvatar.category}</AppText>
         {statusText ? <AppText muted style={{ fontSize: 11, textAlign: "center" }}>{statusText}</AppText> : null}
@@ -689,10 +690,10 @@ export function ProfileScreen({
           </ScrollView>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 9 }}>
             {avatars.map((item) => <Pressable key={item.id} onPress={() => setAvatarId(item.id)} style={{ width: "22%", minWidth: 66, aspectRatio: 1, borderRadius: 13, backgroundColor: item.bgHex, borderWidth: avatarId === item.id ? 3 : 1, borderColor: avatarId === item.id ? C.brown : item.borderHex, alignItems: "center", justifyContent: "center" }}>
-              <Text style={{ fontSize: 25 }}>{idEmoji(item.id)}</Text><AppText style={{ fontSize: 8, textAlign: "center", marginTop: 3 }} numberOfLines={1}>{item.name}</AppText>
+              <PixelAvatarNative avatarId={item.id} size={43} /><AppText style={{ fontSize: 8, textAlign: "center", marginTop: 3 }} numberOfLines={1}>{item.name}</AppText>
             </Pressable>)}
           </View>
-          <AppText muted style={{ fontSize: 9 }}>All original avatar IDs and categories remain available; the Android client uses native emoji rendering in this first native renderer.</AppText>
+          <AppText muted style={{ fontSize: 9 }}>Original pixel-art sprites and featured SVG scenes are rendered natively on Android. Floating CSS animations are intentionally static in this renderer.</AppText>
         </View>
         <Button title={saved ? "✓ Saved" : "Save character"} onPress={save} />
       </Card>
