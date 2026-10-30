@@ -467,7 +467,9 @@ function AppRoot() {
             onDelete={(task) => deleteTask(task.id)}
             onClearCompleted={clearCompleted}
           /> : null}
-          {tab === "focus" ? <FocusScreen tasks={tasks} character={character} onComplete={completeFocus} onProfile={() => setTab("profile")} /> : null}
+          <View style={{ display: tab === "focus" ? "flex" : "none" }}>
+            <FocusScreen tasks={tasks} character={character} onComplete={completeFocus} onProfile={() => setTab("profile")} />
+          </View>
           {tab === "profile" ? <ProfileScreen
             character={character}
             notesCount={notes.length}
