@@ -170,7 +170,8 @@ async function applyPendingOverrides<T extends { id: string }>(
   collectionName: CollectionName,
   remoteItems: T[]
 ): Promise<T[]> {
-  const merged = new Map<string, T>(remoteItems.map((item) => [item.id, item]));
+  const merged = new Map<string, T>();
+  for (const item of remoteItems) merged.set(item.id, item);
   const pending = await readOutbox(uid);
   for (const operation of pending) {
     if (operation.collectionName !== collectionName) continue;
