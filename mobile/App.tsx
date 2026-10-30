@@ -3,7 +3,9 @@ import {
   Alert,
   Pressable,
   ScrollView,
+  Share,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -395,7 +397,7 @@ function AppRoot() {
 
   return (
       <SafeAreaView style={{ flex: 1, backgroundColor: C.bg }} edges={["top", "left", "right"]}>
-        <StatusBar style="dark" backgroundColor={C.bg} />
+        <StatusBar style="dark" />
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 17, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: C.line, backgroundColor: C.bg }}>
           <Pressable onPress={() => setTab("home")} style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
             <View style={{ width: 34, height: 34, borderRadius: 11, backgroundColor: "#E9DFC9", justifyContent: "center", alignItems: "center" }}><Text style={{ fontSize: 19 }}>📜</Text></View>

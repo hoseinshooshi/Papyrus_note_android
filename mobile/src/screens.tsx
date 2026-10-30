@@ -549,7 +549,7 @@ export function FocusScreen({
         content: {
           title: mode === "work" ? "Focus session complete" : "Break complete",
           body: mode === "work" ? `You focused for ${length} minutes. Well done.` : "Your next focus session is ready.",
-          sound: soundEnabled ? "default" : null,
+          sound: soundEnabled ? "default" : false,
         },
         trigger: {
           type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,

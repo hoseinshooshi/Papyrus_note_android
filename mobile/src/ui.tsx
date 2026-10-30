@@ -36,7 +36,6 @@ export function AppText({
   serif = false,
   numberOfLines,
 }: {
-  numberOfLines?: number;
   children: React.ReactNode;
   style?: StyleProp<TextStyle>;
   muted?: boolean;

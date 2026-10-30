@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getApps, initializeApp, type FirebaseOptions } from "firebase/app";
+import * as FirebaseAuth from "firebase/auth";
 import {
   getAuth,
-  getReactNativePersistence,
   initializeAuth,
   onAuthStateChanged,
   type User,
@@ -14,7 +14,6 @@ import {
   getFirestore,
   onSnapshot,
   setDoc,
-  type DocumentData,
   type Unsubscribe,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -22,6 +21,10 @@ import firebaseConfig from "../../firebase-applet-config.json";
 import { DEFAULT_CHARACTER } from "../../src/data/pixelAvatars";
 
 const app = getApps()[0] ?? initializeApp(firebaseConfig as FirebaseOptions);
+type FirebaseAuthDependencies = NonNullable<Parameters<typeof initializeAuth>[1]>;
+const getReactNativePersistence = (FirebaseAuth as unknown as {
+  getReactNativePersistence: (storage: typeof AsyncStorage) => FirebaseAuthDependencies["persistence"];
+}).getReactNativePersistence;
 
 function createAuth() {
   try {
@@ -71,17 +74,17 @@ export function watchAuth(callback: (user: User | null) => void): Unsubscribe {
   return onAuthStateChanged(auth, callback);
 }
 
-export function cleanFirestoreData(value: unknown): DocumentData {
+export function cleanFirestoreData(value: unknown): any {
   if (value === undefined) return null;
-  if (value === null || typeof value !== "object") return value as DocumentData;
+  if (value === null || typeof value !== "object") return value;
   if (Array.isArray(value)) {
-    return value.filter((item) => item !== undefined).map(cleanFirestoreData) as unknown as DocumentData;
+    return value.filter((item) => item !== undefined).map(cleanFirestoreData);
   }
   const result: Record<string, unknown> = {};
   for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
     result[key] = child === undefined ? null : cleanFirestoreData(child);
   }
-  return result as DocumentData;
+  return result;
 }
 
 async function readOutbox(uid: string): Promise<PendingWrite[]> {
