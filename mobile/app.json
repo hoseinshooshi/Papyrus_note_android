@@ -10,7 +10,6 @@
     "android": {
       "package": "com.hoseinshooshi.papyrusnotes",
       "versionCode": 1,
-      "edgeToEdgeEnabled": true,
       "permissions": [
         "RECORD_AUDIO",
         "READ_MEDIA_IMAGES",
